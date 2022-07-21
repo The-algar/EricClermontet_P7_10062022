@@ -52,10 +52,11 @@ export default class RecipeSearch {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
-             return objRecette.ingredients.map((objIngredient) => {
-                 return objIngredient.ingredient.toLowerCase()});
+        let listIngredients = (filteredRecipes || this.recipes).map((cardRecipe) => {
+            return cardRecipe.ingredients.map((objIngredient) => {
+                return objIngredient.ingredient.toLowerCase()
             });
+        });
         // Array d'array liste -> array string liste, supprime 1 imbrication    
         listIngredients = listIngredients.flat();
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
@@ -65,7 +66,7 @@ export default class RecipeSearch {
         if (entryIngredient) {
             listIngredients = listIngredients.filter((el) => {
                 return el.indexOf(entryIngredient.toLowerCase()) > -1
-            })
+            });
         }
 
         // Formate la liste
@@ -75,8 +76,8 @@ export default class RecipeSearch {
         })
         // Retourne liste classée dans l'ordre alphabétique
         return listIngredients.sort((a, b) => {
-            if(a > b) return 1;
-            if(a < b) return -1;
+            if (a > b) return 1;
+            if (a < b) return -1;
             return 0;
         })
     }
