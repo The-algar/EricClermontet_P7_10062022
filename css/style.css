@@ -73,7 +73,7 @@
  }
 
  /********************** filtres selectionnés **********************/
-.sectionSelection {
+.sectionTags {
   display: flex;
   flex-wrap: wrap;
   padding-top: 5px;
@@ -174,7 +174,6 @@ recipeCard {
   -webkit-box-orient: vertical;
 }
 
-<<<<<<< HEAD
 /* ********************* media queries articles recettes ********************* */
 
 @media screen and (max-width: 1300px) {
@@ -191,16 +190,10 @@ recipeCard {
 
 @media screen and (max-width: 1200px) {
   recipeCard {
-=======
-/********************** articles recettes **********************/
-@media screen and (max-width: 1100px) {
-  article {
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
     width: 48%;
     margin-bottom: 30px;
   }
 }
-<<<<<<< HEAD
 @media screen and (max-width: 768px) {
   .btnFilter ul {
     justify-content: flex-end;
@@ -221,7 +214,7 @@ recipeCard {
   recipeCard {
     width: 100%;
   }
-  .sectionSelection {
+  .sectionTags {
     width: 100%;
     justify-content: flex-start;
   }
@@ -231,10 +224,4 @@ recipeCard {
     min-width: 414px;
     padding: 30px 25px 0px 20px;
   }
-=======
-@media screen and (max-width: 790px) {
-  article {
-    width: 100%;
-  }
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
 }
