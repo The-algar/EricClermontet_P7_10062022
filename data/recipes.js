@@ -1,4 +1,4 @@
-const recipes = [
+let recipes = [
     {
         "id": 1,
         "name" : "Limonade de Coco",

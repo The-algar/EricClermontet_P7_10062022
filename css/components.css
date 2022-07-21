@@ -23,28 +23,11 @@
   padding: 8px 20px;
   color: white;
   font-weight: bold;
-<<<<<<< HEAD
   margin: 0 20px 15px 0;
-=======
-  margin: 0 20px 20px 0;
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
   /* suppression apparence button */
   cursor: pointer;
   border: none;
 }
 .btnSelection img {
   padding-left: 13px;
-<<<<<<< HEAD
 }
-=======
-}
-
-
- /* padding-left: 16px;
-  padding-right: 18px;
-  margin-bottom: 25px;
-  margin-right: 20px; */
-
-   /* margin-right: 20px;
-  margin-bottom: 20px;*/
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd

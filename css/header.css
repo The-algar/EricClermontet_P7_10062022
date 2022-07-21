@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 header a {
-=======
-header {
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-<<<<<<< HEAD
 header a img {
   height: 47px;
   width: 52px;
@@ -18,7 +13,9 @@ header a h1 {
   font-size: 2.3em;
   margin: 0px 0 16px 0;
 }
-header a:hover {
+header a img:hover,
+header a h1:hover
+{
   cursor: pointer;
 }
 
@@ -29,23 +26,3 @@ header a:hover {
     white-space: nowrap;
   }
 }
-=======
-header img {
-  height: 47px;
-  width: 52px;
-}
-header h1 {
-  font-family: "DM Sans", sans-serif;
-  color: #d04f4f;
-  font-size: 2.36em;
-  margin: 0px 0 16px 0;
-}
-
-/* responsive */
-@media screen and (max-width: 520px) {
-  header h1 {
-    font-size: 2em;
-    white-space: nowrap;
-  }
-}
->>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd

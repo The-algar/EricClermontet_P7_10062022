@@ -1,61 +1,49 @@
 /* imports */
-import recipeFactory from "../factories/recipeFactory.js";
+import RecipeFactory from "../factories/recipeFactory.js";
+import recipeSearch from "../search/search.js";
 import Recipe from "../model/Recipe.js";
 
 /* Récupération des données avec fetch */
 fetch("data/recipes.json") // Promise résolue: serveur répond
-   .then((response) => {  // Promise résolue: data chargée  
+   .then((response) => {   // Promise résolue: data chargée  
       return response.json();
    })
-   .then((response) => { // Promise résolue: retourne data
-      const { recipes } = response;
-      console.log(recipes); // [{..}, {..},] 50 objets
+   .then(({ recipes }) => { // Promise résolue: retourne data
+      //console.log(recipes); // [{..}, {..},] 50 objets
 
-      // Tableau objets vers instances class Recipe 
-      const recipesInst = recipes.map(function (el) {
-         const test = new Recipe(el);
-         return new recipeFactory(test)
+      /* Retourne tableau d'instances recettes de class Recipe, cree dynamiquement
+      les cartes recettes ds section recette avec méthode createRecipeCards()  */
+      // eslint-disable-next-line no-unused-vars
+      let recipesInstance = recipes.map(function (el) {
+         let recipesInst = new Recipe(el); // tableau de 50 instances
+         let recipeFactory = new RecipeFactory(recipesInst);
+         //console.log(recipeFactory);
+         document.querySelector(".sectionRecettes").appendChild(recipeFactory.createRecipeCards());
+         return recipesInst;
       })
-      // Création dynamiques recettes
-      recipesInst.forEach(function (el) {
-         const node = document.querySelector(".sectionRecettes");
-         node.appendChild(el.createRecipeCards());
+   
+// Saisie champ recherche -> trie et affichage recette
+let entry = "";
+document.querySelector("#inputSearch").addEventListener("input", () => {
+   let indexSectionRecette = document.querySelector(".sectionRecettes")
+   // Gestion de l'input texte main search 
+   entry = document.querySelector("#inputSearch").value;
+
+   // delete recettes affichées précédemment si il y en a
+   while (indexSectionRecette.firstChild) {
+      indexSectionRecette.removeChild(indexSectionRecette.firstChild)
+   }
+
+   let testSearch = new recipeSearch();
+   // result = tableau 50 instance class Recipe
+   testSearch.fetchData().then(function (result) {
+      // Trie des instance Recipe
+      console.log(testSearch.mainSearch(result, entry));
+      // Creation du html des Recipe triées
+      testSearch.mainSearch(result, entry).forEach(function (arrayRecipe) {
+         let recipeFactory = new RecipeFactory(arrayRecipe);
+         indexSectionRecette.appendChild(recipeFactory.createRecipeCards())
       })
-
-      // Fonction de recherche sur propriétés name, ingredients, description 
-      function filter() {
-         const arrayData = recipes;
-         const arrayFiltered = [];
-         const entry = "FoueT";
-         const entryLow = entry.toLowerCase();
-         console.log(entryLow);
-
-         arrayData.forEach(function (card) {
-            const nameLow = card.name.toLowerCase();
-            const descriptionLow = card.description.toLowerCase();
-
-            if (nameLow.includes(entryLow)) {
-               console.log("name trouvé");
-               arrayFiltered.push(card)
-            } else if (descriptionLow.includes(entryLow)) {
-               console.log("description trouvée");
-               arrayFiltered.push(card)
-            } else {
-               card.ingredients.forEach((obj) => {
-                  // obj = {ingre: "kiwi", quantity:, unit:}
-                  const ingredientLow = obj.ingredient.toLowerCase();
-                  if (ingredientLow.includes(entryLow)) {
-                     console.log("ingrédient trouvé")
-                     arrayFiltered.push(card)
-                  }
-               })
-            }
-
-         })
-         console.log(arrayFiltered);
-
-      }
-      
-      filter();
-
+   })
 })
+   })

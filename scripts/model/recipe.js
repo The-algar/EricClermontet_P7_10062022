@@ -1,12 +1,19 @@
 export default class Recipe {
-    constructor(data) {
-        this.appliance = data.appliance;
-        this.description = data.description;
-        this.id = data.id;
-        this.ingredients = data.ingredients;
-        this.name = data.name;
-        this.servings = data.servings;
-        this.time = data.time;
-        this.ustensils = data.ustensils;
+    constructor(cardRecipe) {    
+        this.appliance = cardRecipe.appliance;
+        this.description = cardRecipe.description;
+        this.id = cardRecipe.id;
+        // Formatage de la propriété quantity écrite "quantity" ou "quantite"
+        this.ingredients = cardRecipe.ingredients.map(function(el){
+            return {
+                ingredient : el.ingredient,
+                quantity : el.quantity || el.quantite,
+                unit : el.unit
+            }
+        });
+        this.name = cardRecipe.name;
+        this.servings = cardRecipe.servings;
+        this.time = cardRecipe.time;
+        this.ustensils = cardRecipe.ustensils;
     }
 }
