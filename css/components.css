@@ -15,7 +15,7 @@
   border: none;
 }
 
-.btnSelection {
+.btnTag {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,6 +28,6 @@
   cursor: pointer;
   border: none;
 }
-.btnSelection img {
+.btnTag img {
   padding-left: 13px;
 }

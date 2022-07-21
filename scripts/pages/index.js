@@ -8,7 +8,7 @@ let filteredRecipes = [];
 async function init() {
 
    let indexSectionRecette = document.querySelector(".sectionRecettes");
-   const mainSearch = document.querySelector("#globalSearch");
+   const indexSearch = document.querySelector("#globalSearch");
    const recipeSearch = new RecipeSearch();
 
 
@@ -26,54 +26,84 @@ async function init() {
 
    const inputIngredient = document.querySelector("#searchIngredient");
 
-
-   /* Ajout liste ingrédients dans filtre */
-   createIngredientList(recipeSearch.getIngredients(null, ));
+   /* Initialisation liste ingrédients dans filtre */
+      createIngredientList(recipeSearch.getIngredientsList(null));
+      createTags();
 
    /* Listener champ recherche filtre */
    inputIngredient.addEventListener("change", (event) => {
-      const saisie = event.target.value;
-      createIngredientList(recipeSearch.getIngredients(null, saisie));
-
+      const entry = event.target.value;
+      createIngredientList(recipeSearch.getIngredientsList(null, entry));
+      createTags();
    })
 
+   /* add Listener sur liste ingrédients */
 
    /************* Menu Dropdown *************/
    const ingredientFilter = document.querySelector("#ingredientFilter");
    const nodeIconFilter = document.querySelector(".filter img");
-   const ingredientUl = document.querySelector("#ingredientList");
+   const ingredientLists = document.querySelector("#ingredientList");
 
-   inputIngredient.addEventListener("click", (event) => {
-      if (!ingredientUl.classList.contains("appear")) {
-         /* Modification <input type="text" -> "search" */
-         ingredientUl.classList.add("appear");
-         ingredientFilter.classList.add("unsetFilter");
-         event.target.setAttribute("type", "search");
-         event.target.setAttribute("type", "search");
-         event.target.removeAttribute("value");
-         event.target.setAttribute("placeholder", "Rechercher un ingredient");
-         nodeIconFilter.classList.add("rotate");
-
+   // Click sur menu dropDown -> ouvre / ferme
+   inputIngredient.addEventListener("click", () => {
+      if (!ingredientLists.classList.contains("appear")) {
+         openDropDown();
       } else {
-         ingredientUl.classList.remove("appear");
-         ingredientFilter.classList.remove("unsetFilter")
-         event.target.setAttribute("type", "button");
-         event.target.removeAttribute("placeholder");
-         event.target.setAttribute("value", "ingredient");
-         nodeIconFilter.classList.remove("rotate");
+         closeDropDown();
       }
    })
 
+   // Fermer/ouvrir menu dropdown:
+   function openDropDown() {
+      /* Modification <input type="text" -> "search" */
+      ingredientLists.classList.add("appear");
+      ingredientFilter.classList.add("unsetFilter");
+      inputIngredient.setAttribute("type", "search");
+      inputIngredient.removeAttribute("value");
+      inputIngredient.setAttribute("placeholder", "Rechercher un ingredient");
+      nodeIconFilter.classList.add("rotate");
+   }
+   function closeDropDown() {
+      ingredientLists.classList.remove("appear");
+      ingredientFilter.classList.remove("unsetFilter")
+      inputIngredient.setAttribute("type", "button");
+      inputIngredient.removeAttribute("placeholder");
+      inputIngredient.setAttribute("value", "ingredient");
+      nodeIconFilter.classList.remove("rotate");
+   }
+
+   /************
+   *************    TAG     *******************
+   *************/
+
+   function createTags() {
+      // Ajout Listener sur chaque ingrédient de la liste
+      const indexTag = document.querySelector(".sectionTags");
+      const indexList = document.querySelectorAll(".itemIngredient");
+      indexList.forEach((el) => {
+         el.addEventListener("click", function () {
+            closeDropDown();
+            const tag = document.createElement("button");
+            tag.innerHTML = `${el.textContent}
+            <img src="assets/icons/croix.svg" alt="" />`;
+            tag.classList.add("btnTag");
+            if(el.classList.contains("itemIngredient")){
+               tag.classList.add("colorIngredient");
+            }
+            indexTag.appendChild(tag);
+         })
+      })
+   }
 
    /*************
    *************    Recherche globale     *******************
    *************/
 
    // EventListener sur <input> champ de recherche recette
-   mainSearch.addEventListener("input", (event) => {
-      /* Méthode rechercheGlobale filtre tableau instance recette en fonction saisie input */
-      filteredRecipes = recipeSearch.globalSearch(event.target.value);
-      // Supression des recettes préexistantes à la nouvelle saisie
+   indexSearch.addEventListener("input", (event) => {
+      /* Méthode rechercheGlobale filtre tableau instance recette en fonction entry input */
+      filteredRecipes = recipeSearch.mainSearch(event.target.value);
+      // Supression des recettes préexistantes à la nouvelle entry
       indexSectionRecette.innerHTML = null;
       // Affichage du html des nouvelles recettes
       filteredRecipes.forEach((instRecipe) => {
@@ -82,36 +112,20 @@ async function init() {
       })
    })
 
-
-
-
-
-
-
 }
 init();
 
-      function createIngredientList(ingredientsList) {
-         const ingredientUl = document.querySelector("#ingredientList");
-         // Supression des listes existantes
-         ingredientUl.innerHTML = null;
-         // Ajout des nouvelles listes
-         ingredientsList.forEach((el) => {
-            const list = document.createElement("li");
-            list.innerHTML = el;
-            ingredientUl.appendChild(list);
-        
 
+   function createIngredientList(ingredientsList) {
+      const ingredientLists = document.querySelector("#ingredientList");
+      // Supression des listes existantes
+      ingredientLists.innerHTML = null;
+      // Ajout des nouvelles listes
+      ingredientsList.forEach((el) => {
+         const list = document.createElement("li");
+         list.classList.add("itemIngredient")
+         list.innerHTML = el;
+         ingredientLists.appendChild(list);
       })
-   
-
-
-
-
-
-
-
-
-      
 
    }

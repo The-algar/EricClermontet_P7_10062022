@@ -4,7 +4,7 @@ export default class RecipeSearch {
     constructor() {
         this.recipes = [];
     }
-    globalSearch(entry) {
+    mainSearch(entry) {
         const entryLow = entry.toLowerCase();
         const arrayRecipeFiltered = [];
         this.recipes.forEach((instRecipe) => {
@@ -47,13 +47,13 @@ export default class RecipeSearch {
     }
 
     // Extrait liste ingrédients du tableau recette complet ou filtré
-    // Filtre2 avec search <input>
-    getIngredients(filteredRecipes, searchIngredient) {
+    // Si search filtre -> 
+    getIngredientsList(filteredRecipes, entryIngredient) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
-            return objRecette.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecipe) => {
+            return objRecipe.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()});
            });
        // Array d'array liste -> array string liste, supprime 1 imbrication    
@@ -61,25 +61,11 @@ export default class RecipeSearch {
        // Obj Set -> supprime doublons, spread [... set] conversion set -> array
        listIngredients = [... new Set(listIngredients)];
 
-       if (searchIngredient) {
-           listIngredients = listIngredients.filter((saisie) => saisie.indexOf(searchIngredient.toLowerCase()) > -1);
-       }
-       return listIngredients
+       if (entryIngredient) {
+        listIngredients = listIngredients.filter((el) => {
+            console.log(el.indexOf(entryIngredient.toLowerCase()) > -1);
+            return el.indexOf(entryIngredient.toLowerCase()) > -1});
+    }
+    return listIngredients
    }
 }
-
-/*
-   getIngredients(filteredRecipes, searchIngredient) {
-       let ingredients = [
-           ...new Set((filteredRecipes || this.recipes).map((recipe) => {
-               return recipe.ingredients.map((ingredient) => ingredient.ingredient.toLowerCase())
-           }).flat())
-       ];
-       if (searchIngredient) {
-           ingredients = ingredients.filter((ingredient) => ingredient.indexOf(searchIngredient.toLowerCase()) > -1);
-       }
-       console.log(ingredients);
-       return ingredients
-   }
-   
-*/
