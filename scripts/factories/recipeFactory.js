@@ -2,6 +2,7 @@ export default class recipeFactory {
     constructor(recipeCard) {
         this.recipeCard = recipeCard;
     }
+    // retourne le html <article> à partir d'un objet recette
     createRecipeCards() {
         const recipeCard = document.createElement("recipeCard");
         recipeCard.innerHTML = `
@@ -13,29 +14,23 @@ export default class recipeFactory {
             </div>
             <div class="description">
                 <ul>
-                    ${this.createLi()}
+                    ${this.createLiIngredients()}
                 </ul>
                 <p>${this.recipeCard.description}</p>
             </div>
         </div>`;
-        const node = document.querySelector(".sectionRecettes");
         return recipeCard
     }
-    createLi() {
-        const arrayLi = this.recipeCard.ingredients;
+
+    /* retourne des listes <li> d'ingrédients à partir du tableau d'ingrédients 
+    variable */ 
+    // ingredients = [{ingredient:, quantity:, unit:}, {ingrédient: ...}, {...}
+    createLiIngredients() {    
         let newLi = "";
-        let x = 0;
-        while (x < arrayLi.length) {
-            if (this.recipeCard.ingredients[x]["unit"]) {
-                newLi = newLi + `<li><span>${this.recipeCard.ingredients[x]["ingredient"]}:</span> ${this.recipeCard.ingredients[x]["quantity"]} ${this.recipeCard.ingredients[x]["unit"]}</li>`;
-            } else if (this.recipeCard.ingredients[x]["quantity"]) {
-                newLi = newLi + `<li><span>${this.recipeCard.ingredients[x]["ingredient"]}:</span> ${this.recipeCard.ingredients[x]["quantity"]}</li>`;
-            } else {
-                newLi = newLi + `<li><span>${this.recipeCard.ingredients[x]["ingredient"]}</span></li>`;
-            }
-            x++;
+        /* boucle sur le tableau d'ingrédients et crée <li> avec propriétés quantity et unit si elles existent, retire le ":" si elles n'existent pas */
+        for (let el of this.recipeCard.ingredients) { 
+                newLi = newLi + `<li><span>${el.ingredient}${(el.ingredient)?":":""}</span> ${el.quantity || ""} ${el.unit || ""}</li>`;
         }
         return newLi
     }
 }
-// carote poisson tahicienne sucre limo coco corrigés: quantite
