@@ -86,13 +86,13 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
-.btnIngredients {
+.btnIngredients, .fltIngredient {
   background-color: #3282f7;
 }
-.btnAppareils {
+.btnAppareils, .fltAppareil {
   background-color: #68d9a4;
 }
-.btnUstensiles {
+.btnUstensiles, .fltUstensile {
   background-color: #ed6454;
 }
 

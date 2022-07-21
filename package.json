@@ -1,0 +1,14 @@
+{
+  "name": "ericclermontet_p7_10062022",
+  "version": "1.0.0",
+  "description": "Développer un algorithme de recherche en JavaSript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.17.0"
+  }
+}

@@ -1,7 +1,6 @@
 /* imports */
 import RecipeFactory from "../factories/recipeFactory.js";
 import Recipe from "../model/Recipe.js";
-//import RecipeSearch from "../search/Search.js";
 
 /* Récupération des données avec fetch */
 fetch("data/recipes.json") // Promise résolue: serveur répond
@@ -13,9 +12,11 @@ fetch("data/recipes.json") // Promise résolue: serveur répond
 
       /* Retourne tableau d'instances recettes de class Recipe, cree dynamiquement
       les cartes recettes ds section recette avec méthode createRecipeCards()  */
+      // eslint-disable-next-line no-unused-vars
       const recipesInstance = recipes.map(function (el) {
-         const recipesInst = new Recipe(el);
+         const recipesInst = new Recipe(el); // tableau de 50 instances
          const recipeFactory = new RecipeFactory(recipesInst);
+         console.log(recipeFactory);
          document.querySelector(".sectionRecettes").appendChild(recipeFactory.createRecipeCards());
          return recipesInst;
       })
@@ -25,18 +26,18 @@ fetch("data/recipes.json") // Promise résolue: serveur répond
       function filter() {
          const arrayData = recipes;
          const arrayFiltered = [];
-         const entry = "ChO";
-         const entryLow = entry.toLowerCase();
+         const inputTxt = "ChO";
+         const inputTxtLow = inputTxt.toLowerCase();
 
          arrayData.forEach(function (objet) {
             const nameLow = objet.name.toLowerCase();
             const descriptionLow = objet.description.toLowerCase();
 
-            if (nameLow.includes(entryLow)) {
+            if (nameLow.includes(inputTxtLow)) {
                console.log("name trouvé");
                arrayFiltered.push(objet)
             } 
-            else if (descriptionLow.includes(entryLow)) {
+            else if (descriptionLow.includes(inputTxtLow)) {
                console.log("description trouvée");
                arrayFiltered.push(objet)
             } 
@@ -44,7 +45,7 @@ fetch("data/recipes.json") // Promise résolue: serveur répond
                objet.ingredients.forEach((obj) => {
                   // obj = {ingre: "kiwi", quantity:, unit:}
                   const ingredientLow = obj.ingredient.toLowerCase();
-                  if (ingredientLow.includes(entryLow)) {
+                  if (ingredientLow.includes(inputTxtLow)) {
                      console.log("ingrédient trouvé")
                      arrayFiltered.push(objet)
                   }

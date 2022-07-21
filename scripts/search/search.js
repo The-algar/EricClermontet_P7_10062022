@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import Recipe from "../model/recipe.js";
 
-export default class recipeSearch {
+export default class RecipeSearch {
     constructor() {
     }
     rechercheGlobale() {
@@ -22,7 +22,7 @@ export default class recipeSearch {
             }
             else {
                 card.ingredients.forEach((obj) => {
-                    // obj = {ingre: "kiwi", quantity:, unit:}
+                    //obj = {ingredients: "Coco", quantity:, unit:}
                     const ingredientLow = obj.ingredient.toLowerCase();
                     
                     if (ingredientLow.includes(InputTxtLow)) {
