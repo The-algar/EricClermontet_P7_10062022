@@ -1,0 +1,22 @@
+/* import polices google font: DM Sans, Lato, Roboto */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Lato:wght@400;700&family=Roboto&display=swap');
+
+body {
+    font-family: "Lato", sans-serif;
+  }
+  .wrapper {
+    max-width: 1440px;
+    margin: auto;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+    cursor: default;
+  }
+  /*
+rouge: #D04F4F
+bleu: #3282F7
+vert: #68D9A4
+gris: #C7BEBE
+gris clair: #E7E7E7
+*/
