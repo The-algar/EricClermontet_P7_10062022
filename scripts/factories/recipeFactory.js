@@ -4,8 +4,8 @@ export default class recipeFactory {
     }
     // retourne le html <article> à partir d'un objet recette
     createRecipeCards() {
-        let recipeCard = document.createElement("recipeCard");
-        recipeCard.innerHTML = `
+        let cardRecipe = document.createElement("article");
+        cardRecipe.innerHTML = `
         <div class="imgRecette"></div>
         <div class="legende">
             <div class="titre">
@@ -19,18 +19,18 @@ export default class recipeFactory {
                 <p>${this.recipeCard.description}</p>
             </div>
         </div>`;
-        return recipeCard
+        return cardRecipe
     }
 
     /* retourne des listes <li> d'ingrédients à partir du tableau d'ingrédients 
     variable */ 
     // ingredients = [{ingredient:, quantity:, unit:}, {ingrédient: ...}, {...}
     createLiIngredients() {    
-        let newLi = "";
+        let newLiIngredient = "";
         /* boucle sur le tableau d'ingrédients et crée <li> avec propriétés quantity et unit si elles existent, retire le ":" si elles n'existent pas */
         for (let el of this.recipeCard.ingredients) { 
-                newLi = newLi + `<li><span>${el.ingredient}${(el.ingredient)?":":""}</span> ${el.quantity || ""} ${el.unit || ""}</li>`;
+            newLiIngredient = newLiIngredient + `<li><span>${el.ingredient}${(el.ingredient) ? ":" : ""}</span> ${el.quantity || ""} ${el.unit || ""}</li>`;
         }
-        return newLi
+        return newLiIngredient
     }
 }

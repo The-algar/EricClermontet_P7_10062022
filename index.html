@@ -21,32 +21,73 @@
 
         <main>
             <section class="search">
-                <input id="inputSearch" type="search" placeholder="Rechercher une recette" />
+                <input id="mainSearch" type="search" placeholder="Rechercher une recette" />
                 <img src="assets/icons/loupe.svg" alt="icone loupe" />
             </section>
 
             <section class="sectionTags">
-                <button id="" class="btnSelection fltIngredient">Coco
+                <button id="" class="btnSelection tagIngredient">Coco
                     <img src="assets/icons/croix.svg" alt="" />
                 </button>
-                <button id="" class="btnSelection fltAppareil">Cocotte
+                <button id="" class="btnSelection tagAppareil">Cocotte
                     <img src="assets/icons/croix.svg" alt="" />
                 </button>
-                <button id="" class="btnSelection fltUstensile">Cocotte minute
+                <button id="" class="btnSelection tagUstensile">Cocotte minute
                     <img src="assets/icons/croix.svg" alt="" />
                 </button>
             </section>
 
             <section class="sectionFiltres">
-                <button id="" class="btnIngredients btnFilter">Ingrédients
+                <div id="" class="filterIngredient btnFilter">
+                    <span>Ingrédients</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
-                </button>
-                <button id="" class="btnAppareils btnFilter">Appareils
+                </div>
+                <div id="" class="filterAppareil btnFilter">
+                    <span>Appareils</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
-                </button>
-                <button id="" class="btnUstensiles btnFilter">Ustensiles
+                </div>
+                <div id="" class="filter filterUstensile btnFilter">
+                    <span>Ustensiles</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
-                </button>
+                    <div class="contFilterOpen disappear">
+                        <input id="filterSearch" type="search" placeholder="Rechercher un ustensile" />
+                        <ul id="ustensilList" class="disappear appear">
+                            <li>Bol</li>
+                            <li>Couteau</li>
+                            <li>Cuillère à soupe</li>
+                            <li>Louche</li>
+                            <li>Moule à tarte</li>
+                            <li>Plaque de cuisson</li>
+                            <li>Presse citron</li>
+                            <li>Saladier</li>
+                            <li>Econome</li>
+                            <li>Casserole</li>
+                            <li>Cocotte minute</li>
+                            <li>Bol</li>
+                            <li>Couteau</li>
+                            <li>Cuillère à soupe</li>
+                            <li>Louche</li>
+                            <li>Moule à tarte</li>
+                            <li>Plaque de cuisson</li>
+                            <li>Presse citron</li>
+                            <li>Saladier</li>
+                            <li>Econome</li>
+                            <li>Casserole</li>
+                            <li>Cocotte minute</li>
+                            <li>Bol</li>
+                            <li>Couteau</li>
+                            <li>Cuillère à soupe</li>
+                            <li>Louche</li>
+                            <li>Moule à tarte</li>
+                            <li>Plaque de cuisson</li>
+                            <li>Presse citron</li>
+                            <li>Saladier</li>
+                            <li>Econome</li>
+                            <li>Casserole</li>
+                            <li>Cocotte minute</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
             <section class="sectionRecettes">
@@ -64,7 +105,7 @@
                                 <li><span>Jus citron:</span> 2</li>
                                 <li><span>Crème de coco:</span> 2 cuillères</li>
                                 <li><span>Sucre:</span> 30g</li>
-                                <li><span>Glaçon:</span></li>
+                                <li><span>Glacon:</span></li>
                             </ul>
                             <p>Découper le thon en dés, mettre dans un plat et recouvrir de jus de citron vert (mieux vaut prendre un plat large et peu profond). Laisser reposer au réfrigérateur au moins 2 heures. (Si possible faites-le le soir pour le lendemain. Après avoir laissé mariner le poisson, coupez le concombre en fines rondelles sans la peau et les tomates en prenant soin de retirer les pépins. Rayer la carotte. Ajouter les légumes au poissons avec le citron cette fois ci dans un Saladier. Ajouter le lait de coco. Pour ajouter un peu plus de saveur vous pouver ajouter 1 à 2 cuillères à soupe de Crème de coco</p>
                         </div>
@@ -75,6 +116,7 @@
         </main>
 
     </div>
+
 
     <script src="scripts/pages/index.js" type="module"></script>
 

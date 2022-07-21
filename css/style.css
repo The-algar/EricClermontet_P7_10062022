@@ -43,13 +43,6 @@
   right: 15px;
 }
 
-/********************** filtres selectionnés **********************/
-.sectionTags {
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 5px;
-}
-
 /********************** Global Search **********************/
 .search .fa-search {
   display: block;
@@ -84,15 +77,105 @@
 .sectionFiltres {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
 }
-.btnIngredients, .fltIngredient {
+.filterIngredient,
+.tagIngredient {
   background-color: #3282f7;
 }
-.btnAppareils, .fltAppareil {
+.filterAppareil,
+.tagAppareil {
   background-color: #68d9a4;
 }
-.btnUstensiles, .fltUstensile {
+.filterUstensile,
+.tagUstensile {
+  background-color: #ed6454;
+}
+
+/********************** boutons filtres **********************/
+.disappear {
+  display: none;
+}
+.disappear.appear {
+  display: block;
+}
+.unsetFilter {
+  width: unset;
+  height: unset
+}
+.filter {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.filter span {
+  text-align: center;
+}
+.filter img {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+}
+.rotate {
+  transform: rotate(180deg);
+}
+.filter input {
+  width: 90%;
+  height: 70px;
+  background-color: #ed6454;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  outline: none;
+}
+.filter input::-webkit-input-placeholder {
+  color: #E7E7E7;
+}
+.filter input::-moz-placeholder {
+  color: #E7E7E7;
+}
+.filter input:-ms-input-placeholder {
+  color: #E7E7E7;
+}
+.filter input::-ms-input-placeholder {
+  color: #E7E7E7;
+}
+.filter input::placeholder {
+  color: #E7E7E7;
+}
+/* retire'x'du champ input from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+.filter ul {
+  display: flex;
+  flex-direction: column;
+}
+.btnFilter ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap important;
+  max-height: 400px;
+  padding: 0px;
+  margin: 0px;
+}
+.btnFilter ul li {
+  width: 30%;
+  padding-left: 3%;
+  padding-bottom: 10px;
+  font-weight: normal;
+}
+.btnFilter #ingredientList {
+  background-color: #3282f7;
+}
+.btnFilter #appareilList {
+  background-color: #68d9a4;
+}
+.btnFilter #ustensilList {
   background-color: #ed6454;
 }
 
@@ -196,7 +279,6 @@ recipeCard {
 }
 @media screen and (max-width: 768px) {
   .btnFilter ul {
-    justify-content: flex-end;
     z-index: 10;
   }
 }
@@ -209,9 +291,25 @@ recipeCard {
     flex-direction: row;
     height: 5rem;
   }
+  .btnFilter ul {
+    position: absolute;
+    top: 66px;
+    left: 0px;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    max-height: 400px;
+    padding: 0px;
+    margin: 0px;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 0px 0px 6px 6px;
+  }
 }
 @media screen and (max-width: 768px) {
-  recipeCard {
+  .recipeCard {
     width: 100%;
   }
   .sectionTags {

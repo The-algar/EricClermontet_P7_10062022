@@ -1,59 +1,68 @@
+import Recipe from "../model/Recipe.js";
 
-import Recipe from "../model/recipe.js";
-
-export default class recipeSearch {
+export default class RecipeSearch {
     constructor() {
         this.recipes = [];
     }
-    mainSearch(arrayRecipe, entry) {
-        console.time();
-        let entryLow = entry.toLowerCase();
-        let arrayFiltered = [];
-        arrayRecipe.forEach(function (instRecipe) {
-            let nameLow = instRecipe.name.toLowerCase();
-            let descriptionLow = instRecipe.description.toLowerCase();
-             
+    indexSearch(entry) {
+        const entryLow = entry.toLowerCase();
+        const arrayRecipeFiltered = [];
+        this.recipes.forEach((instRecipe) => {
+            const nameLow = instRecipe.name.toLowerCase();
+            const descriptionLow = instRecipe.description.toLowerCase();
+
             if (nameLow.includes(entryLow)) {
-                arrayFiltered.push(instRecipe) 
-                
+                arrayRecipeFiltered.push(instRecipe)
             }
             else if (descriptionLow.includes(entryLow)) {
-                arrayFiltered.push(instRecipe)
+                arrayRecipeFiltered.push(instRecipe)
             }
             else {
                 instRecipe.ingredients.forEach((ingredients) => {
-                    // ingredients = {ingre: "coco", quantity:, unit:}
-                    let ingredientLow = ingredients.ingredient.toLowerCase();
+                    // ingredients = {ingredient: "coco", quantity:, unit:}
+                    const ingredientLow = ingredients.ingredient.toLowerCase();
                     if (ingredientLow.includes(entryLow)) {
-                        arrayFiltered.push(instRecipe)
+                        arrayRecipeFiltered.push(instRecipe)
                     }
                 })
             }
-            
         })
-        console.timeEnd();
-        
-        return arrayFiltered
-
-
-        
+        return arrayRecipeFiltered
     }
 
-    /* Récupération des données avec fetch */
+    /* Récupération data fetch: tableau recette -> tableau instance recette  */
     async fetchData() {
         return fetch("data/recipes.json")  // Promise résolue: serveur répond
             .then((response) => {        // Promise résolue: data chargée  
                 return response.json();
             })
             .then(({ recipes }) => {      // Promise résolue: retourne data
-                //console.log(recipes);  //[{..}, {..},] 50 instRecipes
-
-                // Retourne tableau d'instances recettes de class Recipe
-                this.recipe = recipes.map(function (objRecipe) {
-                    let recipesInst = new Recipe(objRecipe);
+                // recipes ->  [{..}, {..},] 50 objets recette
+                // Mise à jour propriété class -> 50 instance de class Recipe
+                this.recipes = recipes.map((objRecipe) => {
+                    const recipesInst = new Recipe(objRecipe);
                     return recipesInst;
                 });
-                return this.recipe
             })
     }
+
+    ingredientSearch(entry){
+    const finder = this.recipes.filter((ingreRecipe)=> {
+        let foundRecipe = false;
+        // ingedredient found in table ingredients
+        ingreRecipe.ingredients.forEach((objIngredient) => {
+            if (objIngredient.ingredient.includes(entry)) {
+                foundRecipe = true;
+            } 
+        })
+        return foundRecipe;
+    });
+    console.log(finder);
+    return finder
+    }
+
+
+
+
+
 }
