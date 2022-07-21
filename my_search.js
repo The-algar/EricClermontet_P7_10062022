@@ -7,12 +7,12 @@ export default class recipeSearch {
     }
 
     mainSearch(arrayRecipe, entry) {
-        console.time();
+        //console.time();
         let entryLow = entry.toLowerCase();
         let arrayFiltered = [];
+        let instRecipe = "";
     
         for (let i = 0; i < arrayRecipe.length; i++) {
-            let instRecipe = arrayRecipe[i];
             let nameLow = instRecipe.name.toLowerCase();
             let descriptionLow = instRecipe.description.toLowerCase();
          
@@ -25,9 +25,10 @@ export default class recipeSearch {
         }
 
             else {
-                for (let j = 0; j < instRecipe.ingredients.length; j++) {
-                    let ingredient = instRecipe.ingredients[j];
-                    let ingredientLow = ingredient.ingredient.toLowerCase();
+                for(let i = 0; i < arrayRecipe.ingredients.length; i++) {
+                    let ingredient = "";
+                    //let ingredient = new ingredient(arrayRecipe);
+                    let ingredientLow = ingredient.ingredients.toLowerCase();
 
                     if (ingredientLow.includes(entryLow)) {
                         arrayFiltered.push(instRecipe)
@@ -36,7 +37,7 @@ export default class recipeSearch {
             }
             
         }
-        console.timeEnd();
+        //console.timeEnd();
         
         return arrayFiltered
 
@@ -64,8 +65,7 @@ export default class recipeSearch {
                 this.recipes = recipes.map((objRecipe) => {
                     const recipesInst = new Recipe(objRecipe);
                     return recipesInst;
-                })
-                return this.recipes;
+                });
             })
     }
 }
