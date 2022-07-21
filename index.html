@@ -22,25 +22,17 @@
         <main>
             <section class="search">
                 <input id="globalSearch" type="search" placeholder="Rechercher une recette" />
-                <img src="assets/icons/loupe.svg" alt="icone recherche" />
+                <img src="assets/icons/loupe.svg" alt="icone loupe" />
             </section>
 
             <section class="sectionTags">
-                <!--
-                <button id="" class="btnTag colorIngredient">Coco
-                    <img src="assets/icons/croix.svg" alt="" />
-                </button>
-                <button id="" class="btnTag colorAppareil">Cocotte
-                    <img src="assets/icons/croix.svg" alt="" />
-                </button>
-                <button id="" class="btnTag colorUstensile">Cocotte minute
+                <!-- <button class="btnTag colorIngredient">Noix
                     <img src="assets/icons/croix.svg" alt="" />
                 </button> -->
             </section>
 
             <section class="sectionFiltres">
-                <!--
-                <div id="" class="filterIngredient btnFilter">
+                <!-- <div id="" class="filterIngredient btnFilter">
                     <span>Ingrédients</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
                 </div>
@@ -48,17 +40,15 @@
                     <span>Appareils</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
                 </div> -->
-                <div id="ingredientFilter" class="filter btnFilter colorIngredient">
-                    <input id="searchIngredient" type="button" value="ingredient" class="colorIngredient" />
-                    <!--<span>Ustensiles</span>-->
-                    <img src="assets/icons/chevron_bas.svg" alt="" />
-                    <!--<div class="contFilterOpen disappear"> 
-                        <input id="filterSearch" type="search" placeholder="Rechercher un ustensile" />
-                        <ul id="ustensilList" class="disappear appear"> -->
-                        <ul id="ingredientList" class="disappear" >
+                <div id="ingredientFilter" class="btnFilter colorIngredient">
+                    <input id="searchIngredient" type="button" value="ingredient"
+                        class="colorIngredient openDropdown" />
+                    <img src="assets/icons/chevron_bas.svg" class="openDropdown" alt="" />
+                    <ul id="ingredientList" class="disappear">
 
-                        </ul>
-                    </div>
+                    </ul>
+
+                </div>
             </section>
 
         </section class="sectionRecettes">
