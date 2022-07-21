@@ -3,14 +3,15 @@ import RecipeSearch from "../search/search.js";
 import RecipeFactory from "../factories/RecipeFactory.js";
 
 let filteredRecipes = [];
-let selectedTag = "";
+
 
 /* Récupère tableau recipe via fetch */
-async function init() {
+   async function init() {
 
    let nodeSectionRecette = document.querySelector(".sectionRecettes");
    const nodeSearch = document.querySelector("#globalSearch");
    const recipeSearch = new RecipeSearch();
+
 
    /************
    *************     FETCH     *******************
@@ -20,6 +21,7 @@ async function init() {
    await recipeSearch.fetchData();
    // Initialisation tableau recettes filtrées
    filteredRecipes = [...recipeSearch.recipes];
+
 
    /************
    *************     FILTRES     *******************
@@ -49,7 +51,6 @@ async function init() {
       ingredientLists.classList.add("appear");
       ingredientFilter.classList.add("unsetFilter");
       inputIngredient.setAttribute("type", "search");
-      inputIngredient.setAttribute("type", "search");
       inputIngredient.removeAttribute("value");
       inputIngredient.setAttribute("placeholder", "Rechercher un ingredient");
       nodeIconFilter.classList.add("rotate");
@@ -63,12 +64,12 @@ async function init() {
       nodeIconFilter.classList.remove("rotate");
    }
 
+
    /************* logique filtres *************/
 
    /* Initialisation liste ingrédients dans filtre */
    createIngredientList(recipeSearch.getIngredientsList(null));
    listenListCreateTags();
-   // createListFiltered();
 
    /* Saisie champ recherche filtre */
    inputIngredient.addEventListener("change", (event) => {
@@ -76,6 +77,7 @@ async function init() {
       createIngredientList(recipeSearch.getIngredientsList(null, saisie));
       listenListCreateTags();
    })
+
 
    /************
    *************     TAG     *******************
@@ -93,9 +95,6 @@ async function init() {
             /******* Clic sur liste *******/
             closeDropDown();
 
-            // Export nom du tag
-            selectedTag = el.textContent;
-
             // Creation du tag
             const tag = document.createElement("button");
             tag.innerHTML = `${el.textContent}
@@ -107,39 +106,42 @@ async function init() {
             nodeSectionTag.appendChild(tag);
  
             // Filtre tableau recette
-            filterRecipes(el.textContent);
+            filterRecipes(el.textContent, filteredRecipes);
             console.log(filteredRecipes);
 
+            // Régénération liste ingrédients sans les noms de tag
+            createListWithoutTag();
 
-            // Régénération liste ingrédients
-            // Extraction tableau string liste des recettes filtrées
-            const list = recipeSearch.getIngredientsList(filteredRecipes);
-            // Supression du nom des tags de la liste
-            const nodeTags = document.querySelectorAll(".btnTag");
-            nodeTags.forEach(function(el){
-               list.splice(list.indexOf(el.innerText), 1);
-            })
-            // Génère la liste sans le tag
-            createIngredientList(list);
-
-
-
-            // Récursivité D;
+            // Récursivité du search par tag
             listenListCreateTags();
 
-            /*
-                        nodeSectionTag.addEventListener("click", (e) => {
+
+            /******* Clic sur tag *******/
+            nodeSectionTag.lastChild.addEventListener("click", (event) => {
 
                // Supression du tag
-               e.target.remove();
+               event.target.remove();
 
                // Filtre tableau recette
-               console.log(e.target.innerText);
-               createIngredientList(recipeSearch.getIngredientsList(filteredRecipes));
+               const nodeTags = document.querySelectorAll(".btnTag");
+
+               // Remise état origine tableau recette
+               filteredRecipes = [...recipeSearch.recipes];
+
+               // Si tag, filtre du tableau avec chaque tag 
+               if (nodeTags) {
+                  nodeTags.forEach((el) => {
+                     filterRecipes(el.innerText);
+                     console.log(filteredRecipes);
+                  })
+               }
+               // Régénération liste ingrédients sans les noms de tag
+               createListWithoutTag();
+
+               // Récursivité and again ,-)
+               listenListCreateTags();
+
             })
-            */
-
-
          })
       })
    }
@@ -152,6 +154,19 @@ async function init() {
          })
    }
 
+   function createListWithoutTag() {
+      const nodeTags = document.querySelectorAll(".btnTag");
+
+      // Extraction tableau string liste des recettes filtrées
+      const list = recipeSearch.getIngredientsList(filteredRecipes);
+
+      // Supression du nom des tags de la liste
+      nodeTags.forEach(function (el) {
+         list.splice(list.indexOf(el.innerText), 1);
+      })
+      // Génère la liste sans le tag
+      createIngredientList(list);
+   }
    /************
    *************     Recherche globale     *******************
    *************/
@@ -168,12 +183,6 @@ async function init() {
          nodeSectionRecette.appendChild(recipeFactory.createRecipeCards());
       })
    })
-
-
-
-
-
-
 
 }
 init();

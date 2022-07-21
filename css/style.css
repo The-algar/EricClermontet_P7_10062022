@@ -51,7 +51,7 @@
 }
 
 .btnTag img {
-  pointer-events: auto;
+  pointer-events: none;
 }
 /********************** Bouton filtres **********************/
 .sectionFiltres {
