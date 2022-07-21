@@ -1,50 +1,59 @@
-/* eslint-disable no-undef */
+
 import Recipe from "../model/recipe.js";
 
-export default class RecipeSearch {
+export default class recipeSearch {
     constructor() {
+        this.recipes = [];
     }
-    rechercheGlobale() {
-        this.recipes.forEach(function (recipeCard) {
-            const nameLow = recipeCard.name.toLowerCase();
-            const descriptionLow = recipeCard.description.toLowerCase();
-
-            if (nameLow.includes(InputTxtLow)) {
-                console.log("name trouvé");
+    mainSearch(arrayRecipe, entry) {
+        console.time();
+        let entryLow = entry.toLowerCase();
+        let arrayFiltered = [];
+        arrayRecipe.forEach(function (instRecipe) {
+            let nameLow = instRecipe.name.toLowerCase();
+            let descriptionLow = instRecipe.description.toLowerCase();
+             
+            if (nameLow.includes(entryLow)) {
+                arrayFiltered.push(instRecipe) 
                 
-                arrayFiltered.push(recipeCard)
             }
-            
-            else if (descriptionLow.includes(InputTxtLow)) {
-                console.log("description trouvée");
-                
-                arrayFiltered.push(recipeCard)
+            else if (descriptionLow.includes(entryLow)) {
+                arrayFiltered.push(instRecipe)
             }
             else {
-                card.ingredients.forEach((obj) => {
-                    //obj = {ingredients: "Coco", quantity:, unit:}
-                    const ingredientLow = obj.ingredient.toLowerCase();
-                    
-                    if (ingredientLow.includes(InputTxtLow)) {
-                        console.log("ingrédient trouvé")
-                        
-                        arrayFiltered.push(recipeCard)
+                instRecipe.ingredients.forEach((ingredients) => {
+                    // ingredients = {ingre: "coco", quantity:, unit:}
+                    let ingredientLow = ingredients.ingredient.toLowerCase();
+                    if (ingredientLow.includes(entryLow)) {
+                        arrayFiltered.push(instRecipe)
                     }
                 })
             }
+            
         })
+        console.timeEnd();
+        
+        return arrayFiltered
+
+
+        
     }
 
+    /* Récupération des données avec fetch */
     async fetchData() {
-        fetch("data/recipes.json") // Promise résolue: serveur répond
-            .then((response) => {   // Promise résolue: data chargée  
+        return fetch("data/recipes.json")  // Promise résolue: serveur répond
+            .then((response) => {        // Promise résolue: data chargée  
                 return response.json();
             })
-            .then(({ recipes }) => { // Promise résolue: retourne data
-                this.recipes = recipes.map(function (recipe) {
-                    return new Recipe(recipe);
+            .then(({ recipes }) => {      // Promise résolue: retourne data
+                //console.log(recipes);  //[{..}, {..},] 50 instRecipes
+
+                // Retourne tableau d'instances recettes de class Recipe
+                this.recipe = recipes.map(function (objRecipe) {
+                    let recipesInst = new Recipe(objRecipe);
+                    return recipesInst;
                 });
+                return this.recipe
             })
     }
-
 }

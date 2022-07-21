@@ -189,7 +189,7 @@ recipeCard {
 }
 
 @media screen and (max-width: 1200px) {
-  recipeCard {
+  article {
     width: 48%;
     margin-bottom: 30px;
   }

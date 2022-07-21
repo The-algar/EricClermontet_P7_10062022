@@ -4,7 +4,7 @@ export default class recipeFactory {
     }
     // retourne le html <article> à partir d'un objet recette
     createRecipeCards() {
-        const recipeCard = document.createElement("recipeCard");
+        let recipeCard = document.createElement("recipeCard");
         recipeCard.innerHTML = `
         <div class="imgRecette"></div>
         <div class="legende">
