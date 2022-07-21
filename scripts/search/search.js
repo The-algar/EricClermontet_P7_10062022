@@ -1,10 +1,10 @@
 import Recipe from "../model/Recipe.js";
 
-export default class RecipeSearch {
+export default class RecipeService {
     constructor() {
         this.recipes = [];
     }
-    rechercheGlobale(entry) {
+    mainSearch(entry) {
         const entryLow = entry.toLowerCase();
         const arrayRecipeFiltered = [];
         this.recipes.forEach((instRecipe) => {
@@ -47,21 +47,22 @@ export default class RecipeSearch {
     }
 
     // Extrait liste ingrédients du tableau recette complet ou filtré
-    // Si recherche filtre -> filtre les ingrédients inclus dnas la recette avec l'input entry
+    // Si recherche filtre -> filte ingrédients qui match avec entry
     getIngredientsList(filteredRecipes, entryIngredient) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((cardRecipe) => {
-            return cardRecipe.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
+            return objRecette.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
         // Array d'array liste -> array string liste, supprime 1 imbrication    
         listIngredients = listIngredients.flat();
+        
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
-        
+
         // Filtre l'array de string ingrédients en fct entry
         if (entryIngredient) {
             listIngredients = listIngredients.filter((el) => {
@@ -69,16 +70,40 @@ export default class RecipeSearch {
             });
         }
 
-        // Formate la liste
-        // Ajoute un maj sur 1er caractère si manquante
-        listIngredients = listIngredients.map((el) => {
-            return el[0].toUpperCase() + el.slice(1);
+        // Formatage liste
+        return this.formateList(listIngredients)
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    getAppareilsList(filteredRecipes, entryIngredient) {
+
+         // Transformation array d'objet recette -> array de liste d'appareils
+        let listAppareils = (filteredRecipes || this.recipes).map((el) => {
+            return el.appliance.toLowerCase()
+        })
+
+        // Formatage liste
+        // Obj Set -> supprime doublons, spread [... set] conversion set -> array
+        listAppareils = [... new Set(listAppareils)];
+        
+        // si entry
+        
+        // Formatage liste
+        return this.formateList(listAppareils)
+    }
+
+    // Formatage liste
+    formateList(list){
+        // Ajoute une maj sur 1er caractère
+        list = list.map((el) => {
+            return el[0].toUpperCase() + el.slice(1)
         })
         // Retourne liste classée dans l'ordre alphabétique
-        return listIngredients.sort((a, b) => {
+        return list.sort((a, b) => {
             if (a > b) return 1;
             if (a < b) return -1;
-            return 0;
+            return 0
         })
     }
+
 }

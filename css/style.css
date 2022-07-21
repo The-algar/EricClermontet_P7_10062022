@@ -151,8 +151,22 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 .btnFilter ul li {
   width: 30%;
+  padding-left: 3%;
+  padding-bottom: 10px;
+  font-weight: normal;
 }
-
+.btnFilter #ingredientList {
+  background-color: #3282f7;
+  z-index: 5;
+}
+.btnFilter #appareilList {
+  background-color: #68d9a4;
+  z-index: 5;
+}
+.btnFilter #ustensilList {
+  background-color: #ed6454;
+  z-index: 5;
+}
 /********************** articles recettes **********************/
 .sectionRecettes {
   display: flex;
