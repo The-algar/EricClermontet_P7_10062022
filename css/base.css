@@ -7,14 +7,18 @@ body {
   .wrapper {
     max-width: 1440px;
     margin: auto;
+    padding: 30px 100px 0px 100px;
   }
   a {
     text-decoration: none;
     color: black;
     cursor: default;
   }
+  ul { list-style: none
+  }
   /*
 rouge: #D04F4F
+orange: #ED6454
 bleu: #3282F7
 vert: #68D9A4
 gris: #C7BEBE

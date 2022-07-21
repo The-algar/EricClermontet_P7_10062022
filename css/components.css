@@ -1,0 +1,36 @@
+.btnFilter {
+  width: 170px;
+  height: 70px;
+  border-radius: 6px;
+  /* suppression apparence button*/
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  /* texte */
+  color: white;
+  font-size: 1.05em; 
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 18px;
+}
+
+.btnSelection {
+  border-radius: 6px;
+  /* suppression apparence button*/
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  /* texte */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  font-weight: bold;
+}
+.btnSelection img {
+  padding-left: 13px;
+}
