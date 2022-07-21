@@ -43,34 +43,11 @@
   right: 15px;
 }
 
-/********************** Global Search **********************/
-.search .fa-search {
-  display: block;
-  position: absolute;
-  right: 20px;
-  bottom: 15px;
-  align-content: center;
-  font-size: 32px;
-  color: black;
- }
- .search button {
-  position: absolute;
-  justify-content: flex-end;
-  align-content: center;
-  top: 5px;
-  right: 5px;
-  height: 50px;
-  width: 110px;
-  background: none;
-
- }
-
  /********************** filtres selectionnés **********************/
-.sectionTags {
+ .sectionTags {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 5px;
-  padding-bottom: 15px;  
+  padding-top: 5px; padding-bottom: 15px;  
 }
 
 /********************** filtres **********************/
@@ -79,8 +56,7 @@
   justify-content: flex-start;
   flex-wrap: wrap; 
 }
-.filterIngredient,
-.tagIngredient {
+.colorIngredient /* .filterIngredient, .tagIngredient */ {
   background-color: #3282f7;
 }
 .filterAppareil,
@@ -96,12 +72,14 @@
 .disappear {
   display: none;
 }
-.disappear.appear {
-  display: block;
+.disappear.appear { /* display: block; */
+  display: flex;
+  padding: 0 1rem 0 1rem;
+  min-width: 96%;
+  max-height: 400px;
 }
-.unsetFilter {
-  width: unset;
-  height: unset
+.unsetFilter { /*width: unset; height: unset */
+  width: 50%;
 }
 .filter {
   display: flex;
@@ -122,7 +100,6 @@
 .filter input {
   width: 90%;
   height: 70px;
-  background-color: #ed6454;
   color: white;
   font-size: 1em;
   font-weight: bold;
@@ -151,32 +128,21 @@ input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 .filter ul {
-  display: flex;
-  flex-direction: column;
-}
-.btnFilter ul {
-  display: flex;
-  flex-direction: column;
+  position: absolute;
+  bottom: -390px;
+  left: 0px;
+  flex-direction: row;
   justify-content: space-between;
-  flex-wrap: wrap important;
-  max-height: 400px;
+  flex-wrap: wrap;
+  height: 400px;
   padding: 0px;
   margin: 0px;
-}
-.btnFilter ul li {
-  width: 30%;
-  padding-left: 3%;
-  padding-bottom: 10px;
-  font-weight: normal;
-}
-.btnFilter #ingredientList {
   background-color: #3282f7;
+  overflow: scroll;
+  overflow-x: hidden
 }
-.btnFilter #appareilList {
-  background-color: #68d9a4;
-}
-.btnFilter #ustensilList {
-  background-color: #ed6454;
+.filter ul li {
+  width: 30%;
 }
 
 /********************** articles recettes **********************/
@@ -185,10 +151,10 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   justify-content: space-between;
   flex-wrap: wrap;
 }
-recipeCard {
+article {
   height: 365px;
-  width: 30.5%;
-  margin-bottom: 50px;
+  /*width: 30.5%;
+  margin-bottom: 50px; */
 }
 .imgRecette {
   height: 178px;
@@ -256,6 +222,28 @@ recipeCard {
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
 }
+
+/********************** Global Search **********************/
+.search .fa-search {
+  display: block;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  align-content: center;
+  font-size: 32px;
+  color: black;
+ }
+ .search button {
+  position: absolute;
+  justify-content: flex-end;
+  align-content: center;
+  top: 5px;
+  right: 5px;
+  height: 50px;
+  width: 110px;
+  background: none;
+
+ }
 
 /* ********************* media queries articles recettes ********************* */
 

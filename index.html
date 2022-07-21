@@ -21,11 +21,12 @@
 
         <main>
             <section class="search">
-                <input id="mainSearch" type="search" placeholder="Rechercher une recette" />
+                <input id="globalSearch" type="search" placeholder="Rechercher une recette" />
                 <img src="assets/icons/loupe.svg" alt="icone loupe" />
             </section>
 
             <section class="sectionTags">
+                <!--
                 <button id="" class="btnSelection tagIngredient">Coco
                     <img src="assets/icons/croix.svg" alt="" />
                 </button>
@@ -34,10 +35,11 @@
                 </button>
                 <button id="" class="btnSelection tagUstensile">Cocotte minute
                     <img src="assets/icons/croix.svg" alt="" />
-                </button>
+                </button> -->
             </section>
 
             <section class="sectionFiltres">
+                <!--
                 <div id="" class="filterIngredient btnFilter">
                     <span>Ingrédients</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
@@ -45,53 +47,22 @@
                 <div id="" class="filterAppareil btnFilter">
                     <span>Appareils</span>
                     <img src="assets/icons/chevron_bas.svg" alt="" />
-                </div>
-                <div id="" class="filter filterUstensile btnFilter">
-                    <span>Ustensiles</span>
+                </div> -->
+                <div id="ingredientFilter" class="filter btnFilter colorIngredient">
+                    <input id="searchIngredient" type="button" value="ingredient" class="colorIngredient" />
+                    <!--<span>Ustensiles</span>-->
                     <img src="assets/icons/chevron_bas.svg" alt="" />
-                    <div class="contFilterOpen disappear">
+                    <!--<div class="contFilterOpen disappear"> 
                         <input id="filterSearch" type="search" placeholder="Rechercher un ustensile" />
-                        <ul id="ustensilList" class="disappear appear">
-                            <li>Bol</li>
-                            <li>Couteau</li>
-                            <li>Cuillère à soupe</li>
-                            <li>Louche</li>
-                            <li>Moule à tarte</li>
-                            <li>Plaque de cuisson</li>
-                            <li>Presse citron</li>
-                            <li>Saladier</li>
-                            <li>Econome</li>
-                            <li>Casserole</li>
-                            <li>Cocotte minute</li>
-                            <li>Bol</li>
-                            <li>Couteau</li>
-                            <li>Cuillère à soupe</li>
-                            <li>Louche</li>
-                            <li>Moule à tarte</li>
-                            <li>Plaque de cuisson</li>
-                            <li>Presse citron</li>
-                            <li>Saladier</li>
-                            <li>Econome</li>
-                            <li>Casserole</li>
-                            <li>Cocotte minute</li>
-                            <li>Bol</li>
-                            <li>Couteau</li>
-                            <li>Cuillère à soupe</li>
-                            <li>Louche</li>
-                            <li>Moule à tarte</li>
-                            <li>Plaque de cuisson</li>
-                            <li>Presse citron</li>
-                            <li>Saladier</li>
-                            <li>Econome</li>
-                            <li>Casserole</li>
-                            <li>Cocotte minute</li>
+                        <ul id="ustensilList" class="disappear appear"> -->
+                        <ul id="ingredientList" class="disappear" >
+
                         </ul>
-                    </div>
                 </div>
             </section>
 
-            <section class="sectionRecettes">
-                 <!--
+        </section class="sectionRecettes">
+
 		        <article>
                     <div class="imgRecette"></div>
                     <div class="legende">
@@ -111,7 +82,6 @@
                         </div>
                     </div>
                 </article>
-                -->
             </section>
         </main>
 
