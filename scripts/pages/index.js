@@ -11,7 +11,6 @@ async function init() {
    let nodeSectionRecette = document.querySelector(".sectionRecettes");
    const nodeSearch = document.querySelector("#globalSearch");
    const recipeSearch = new RecipeSearch();
-   filteredRecipes = [...recipeSearch.recipes];
 
    /************
    *************     FETCH     *******************
@@ -19,7 +18,8 @@ async function init() {
 
    /* récupération data + ajout propriété recipeSearch: array 50 instances recette */
    await recipeSearch.fetchData();
-
+   // Initialisation tableau recettes filtrées
+   filteredRecipes = [...recipeSearch.recipes];
 
    /************
    *************     FILTRES     *******************
@@ -28,14 +28,14 @@ async function init() {
    /************* Menu Dropdown *************/
    const ingredientFilter = document.querySelector("#ingredientFilter");
    const nodeIconFilter = document.querySelector("#ingredientFilter img");
-   const ingredientList = document.querySelector("#ingredientList");
+   const ingredientLists = document.querySelector("#ingredientList");
    const boutonFilter = document.querySelectorAll(".openDropdown");
    const inputIngredient = document.querySelector("#searchIngredient");
 
    // Click sur menu dropDown -> ouvre / ferme
    boutonFilter.forEach((el) => {
       el.addEventListener("click", () => {
-         if (!ingredientList.classList.contains("appear")) {
+         if (!ingredientLists.classList.contains("appear")) {
             openDropDown();
          } else {
             closeDropDown();
@@ -46,7 +46,7 @@ async function init() {
    // Fermer/ouvrir menu dropdown:
    function openDropDown() {
       /* Modification <input type="text" -> "search" */
-      ingredientList.classList.add("appear");
+      ingredientLists.classList.add("appear");
       ingredientFilter.classList.add("unsetFilter");
       inputIngredient.setAttribute("type", "search");
       inputIngredient.setAttribute("type", "search");
@@ -55,7 +55,7 @@ async function init() {
       nodeIconFilter.classList.add("rotate");
    }
    function closeDropDown() {
-      ingredientList.classList.remove("appear");
+      ingredientLists.classList.remove("appear");
       ingredientFilter.classList.remove("unsetFilter")
       inputIngredient.setAttribute("type", "button");
       inputIngredient.removeAttribute("placeholder");
@@ -83,7 +83,7 @@ async function init() {
 
    // listen liste + cree tags
    function listenListCreateTags() {
-      const nodeTag = document.querySelector(".sectionTags");
+      const nodeSectionTag = document.querySelector(".sectionTags");
       const nodesList = document.querySelectorAll(".itemIngredient");
 
       // Ajout Listener sur chaque ingrédient de la liste
@@ -104,25 +104,31 @@ async function init() {
             if (el.classList.contains("itemIngredient")) {
                tag.classList.add("colorIngredient");
             }
+            nodeSectionTag.appendChild(tag);
+ 
             // Filtre tableau recette
-            nodeTag.appendChild(tag);
             filterRecipes(el.textContent);
             console.log(filteredRecipes);
 
 
-            // Régénération liste
-            // Retrait du tag de la liste
-            let list = recipeSearch.getIngredientsList(filteredRecipes);
-            list.splice(list.indexOf(selectedTag), 1);
+            // Régénération liste ingrédients
+            // Extraction tableau string liste des recettes filtrées
+            const list = recipeSearch.getIngredientsList(filteredRecipes);
+            // Supression du nom des tags de la liste
+            const nodeTags = document.querySelectorAll(".btnTag");
+            nodeTags.forEach(function(el){
+               list.splice(list.indexOf(el.innerText), 1);
+            })
             // Génère la liste sans le tag
             createIngredientList(list);
 
-            // Récursivité ;O 
+
+
+            // Récursivité D;
             listenListCreateTags();
 
-
-            /* Fermeture tag
-            nodeTag.addEventListener("click", (e) => {
+            /*
+                        nodeSectionTag.addEventListener("click", (e) => {
 
                // Supression du tag
                e.target.remove();
@@ -132,20 +138,18 @@ async function init() {
                createIngredientList(recipeSearch.getIngredientsList(filteredRecipes));
             })
             */
+
+
          })
       })
    }
 
    function filterRecipes(tag) {
-      if (tag) {
-         filteredRecipes = recipeSearch.recipes.filter((el) => {
+         filteredRecipes = filteredRecipes.filter((el) => {
             return el.ingredients.find((el) => {
                return el.ingredient.toLowerCase() === tag.toLowerCase();
             })
          })
-      } else {
-         filteredRecipes = [...recipeSearch.recipes];
-      }
    }
 
    /************
@@ -178,14 +182,14 @@ init();
 
 
 function createIngredientList(ingredientsList) {
-   const ingredientList = document.querySelector("#ingredientList");
+   const ingredientLists = document.querySelector("#ingredientList");
    // Supression des listes existantes
-   ingredientList.innerHTML = null;
+   ingredientLists.innerHTML = null;
    // Ajout des nouvelles listes
    ingredientsList.forEach((el) => {
       const list = document.createElement("li");
       list.classList.add("itemIngredient")
       list.innerHTML = el;
-      ingredientList.appendChild(list);
+      ingredientLists.appendChild(list);
    })
 }
