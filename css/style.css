@@ -48,6 +48,35 @@
   display: flex;
   flex-wrap: wrap;
   padding-top: 5px;
+}
+
+/********************** Global Search **********************/
+.search .fa-search {
+  display: block;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  align-content: center;
+  font-size: 32px;
+  color: black;
+ }
+ .search button {
+  position: absolute;
+  justify-content: flex-end;
+  align-content: center;
+  top: 5px;
+  right: 5px;
+  height: 50px;
+  width: 110px;
+  background: none;
+
+ }
+
+ /********************** filtres selectionnés **********************/
+.sectionSelection {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 5px;
   padding-bottom: 15px;  
 }
 
@@ -73,7 +102,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-article {
+recipeCard {
   height: 365px;
   width: 30.5%;
   margin-bottom: 50px;
@@ -132,7 +161,7 @@ article {
   font-weight: bold;
 }
 .description p {
-  height: 87px;
+  height: 89px;
   width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,15 +174,67 @@ article {
   -webkit-box-orient: vertical;
 }
 
+<<<<<<< HEAD
+/* ********************* media queries articles recettes ********************* */
+
+@media screen and (max-width: 1300px) {
+  .wrapper {
+    padding: 30px 30px 0px 30px;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .sectionFiltres{
+    padding-left: 0 !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  recipeCard {
+=======
 /********************** articles recettes **********************/
 @media screen and (max-width: 1100px) {
   article {
+>>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
     width: 48%;
     margin-bottom: 30px;
   }
 }
+<<<<<<< HEAD
+@media screen and (max-width: 768px) {
+  .btnFilter ul {
+    justify-content: flex-end;
+    z-index: 10;
+  }
+}
+@media screen and (max-width: 768px) {
+  .sectionFiltres {
+    flex-direction: column;
+  }
+  .btnFilter {
+    width: 100%;
+    flex-direction: row;
+    height: 5rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  recipeCard {
+    width: 100%;
+  }
+  .sectionSelection {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+@media screen and (max-width: 480px) {
+  .wrapper {
+    min-width: 414px;
+    padding: 30px 25px 0px 20px;
+  }
+=======
 @media screen and (max-width: 790px) {
   article {
     width: 100%;
   }
+>>>>>>> 224ad76e4cef4e6447abc64b8c907015fa058dbd
 }
