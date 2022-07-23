@@ -1,10 +1,10 @@
 import Recipe from "../model/Recipe.js";
 
-export default class RecipeService {
+export default class RecipeSearch {
     constructor() {
         this.recipes = [];
     }
-    mainSearch(entry) {
+    entrySearch(entry) {
         const entryLow = entry.toLowerCase();
         const arrayRecipeFiltered = [];
         this.recipes.forEach((instRecipe) => {
@@ -47,23 +47,23 @@ export default class RecipeService {
     }
 
     // Extrait liste ingrédients du tableau recette complet ou filtré
-    // Si recherche filtre -> filte ingrédients qui match avec entry
-    getIngredientsList(filteredRecipes, entryIngredient) {
+    // Si recherche filtre -> filte ingrédients qui match avec saisie
+    getIngredientsList(filteredRecipes, exclusionList, entryIngredient) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
-            return objRecette.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecipe) => {
+            return objRecipe.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
         // Array d'array liste -> array string liste, supprime 1 imbrication    
         listIngredients = listIngredients.flat();
-        
+
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
 
-        // Filtre l'array de string ingrédients en fct entry
+        // Filtre l'array de string ingrédients en fonction du texte saisie
         if (entryIngredient) {
             listIngredients = listIngredients.filter((el) => {
                 return el.indexOf(entryIngredient.toLowerCase()) > -1
@@ -71,13 +71,24 @@ export default class RecipeService {
         }
 
         // Formatage liste
-        return this.formateList(listIngredients)
+        listIngredients = this.formateList(listIngredients);
+
+        // Supression des noms tags de la liste via liste d'exclusion
+        if (exclusionList) {
+            exclusionList.forEach((el) => {
+                // Si l'élément existe, le retirer de la liste
+                if (listIngredients.indexOf(el) !== -1) {
+                    listIngredients.splice(listIngredients.indexOf(el), 1);
+                }
+            })
+        }
+        console.log(listIngredients);
+        return listIngredients
     }
 
-    // eslint-disable-next-line no-unused-vars
-    getAppareilsList(filteredRecipes, entryIngredient) {
+    getAppareilsList(filteredRecipes, exclusionList, entryAppareil) {
 
-         // Transformation array d'objet recette -> array de liste d'appareils
+        // Transformation array d'objet recette -> array de liste d'appareils
         let listAppareils = (filteredRecipes || this.recipes).map((el) => {
             return el.appliance.toLowerCase()
         })
@@ -85,15 +96,70 @@ export default class RecipeService {
         // Formatage liste
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
-        
-        // si entry
-        
+
+        //Filtre l'array de string appareils en fonction de la saisie
+        if (entryAppareil) {
+            listAppareils = listAppareils.filter((el) => {
+                return el.indexOf(entryAppareil.toLowerCase()) > -1
+            });
+        }
+
+        // Obj Set -> supprime doublons, spread [... set] conversion set -> array
+        listAppareils = [... new Set(listAppareils)];
+
         // Formatage liste
-        return this.formateList(listAppareils)
+        listAppareils = this.formateList(listAppareils)
+
+        // Liste exclusion tags
+        if (exclusionList) {
+            exclusionList.forEach((el) => {
+                // Si l'élément existe, le retirer de la liste
+                if (listAppareils.indexOf(el) !== -1) {
+                    listAppareils.splice(listAppareils.indexOf(el), 1);
+                }
+            })
+        }
+        console.log(listAppareils);
+        return listAppareils
+    }
+
+    getUstensilsList(filteredRecipes, exclusionList, entryUstensil) {
+
+        // Transformation array d'objet recette -> array de liste d'appareils
+        let listUstensils = (filteredRecipes || this.recipes).map((el) => {
+            return el.ustensils.map((el) => {
+                return el.toLowerCase();
+            })
+        })
+
+        // Formatage liste
+        listUstensils = listUstensils.flat();
+
+        // Obj Set -> supprime doublons, spread [... set] conversion set -> array
+        listUstensils = [... new Set(listUstensils)];
+
+        //Filtre l'array de string appareils en fonction de la saisie
+        if (entryUstensil) {
+            listUstensils = listUstensils.filter((el) => {
+                return el.indexOf(entryUstensil.toLowerCase()) > -1
+            });
+        }
+
+        // Formatage liste
+        listUstensils = this.formateList(listUstensils);
+
+        // Liste exclusion tags
+        if (exclusionList) {
+            exclusionList.forEach((el) => {
+                listUstensils.splice(listUstensils.indexOf(el), 1);
+            })
+        }
+        console.log(listUstensils);
+        return listUstensils
     }
 
     // Formatage liste
-    formateList(list){
+    formateList(list) {
         // Ajoute une maj sur 1er caractère
         list = list.map((el) => {
             return el[0].toUpperCase() + el.slice(1)
@@ -105,5 +171,10 @@ export default class RecipeService {
             return 0
         })
     }
+
+
+
+
+
 
 }

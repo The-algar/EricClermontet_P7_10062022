@@ -1,18 +1,11 @@
 .btnFilter {
   width: 170px;
   height: 70px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 18px 0 16px;
-  margin: 0 20px 25px 0;
   border-radius: 6px;
+  margin: 0 20px 25px 0;
   font-size: 1.05em;
   font-weight: bold;
   color: white;
-  /* suppression apparence button*/
-  cursor: pointer;
-  border: none;
 }
 
 .btnTag {
@@ -20,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 6px;
-  padding: 8px 20px;
+  padding: 8px 15px;
   color: white;
   font-weight: bold;
   margin: 0 20px 15px 0;
