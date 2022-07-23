@@ -1,33 +1,9 @@
 import Recipe from "../model/Recipe.js";
 
-export default class RecipeSearch {
+export default class RecipeService {
     constructor() {
         this.recipes = [];
-    }
-    entrySearch(entry) {
-        const entryLow = entry.toLowerCase();
-        const arrayRecipeFiltered = [];
-        this.recipes.forEach((instRecipe) => {
-            const nameLow = instRecipe.name.toLowerCase();
-            const descriptionLow = instRecipe.description.toLowerCase();
-
-            if (nameLow.includes(entryLow)) {
-                arrayRecipeFiltered.push(instRecipe)
-            }
-            else if (descriptionLow.includes(entryLow)) {
-                arrayRecipeFiltered.push(instRecipe)
-            }
-            else {
-                instRecipe.ingredients.forEach((ingredients) => {
-                    // ingredients = {ingre: "kiwi", quantity:, unit:}
-                    const ingredientLow = ingredients.ingredient.toLowerCase();
-                    if (ingredientLow.includes(entryLow)) {
-                        arrayRecipeFiltered.push(instRecipe)
-                    }
-                })
-            }
-        })
-        return arrayRecipeFiltered
+        this.filteredRecipes = [];
     }
 
     /* Récupération data fetch: tableau recette -> tableau instance recette  */
@@ -52,8 +28,8 @@ export default class RecipeSearch {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecipe) => {
-            return objRecipe.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
+            return objRecette.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
@@ -63,12 +39,12 @@ export default class RecipeSearch {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
 
-        // Filtre l'array de string ingrédients en fonction du texte saisie
-        if (entryIngredient) {
+        //Filtre l'array de string ingrédients en fonction de la recherche saisie
+        /*if (entryIngredient) {
             listIngredients = listIngredients.filter((el) => {
                 return el.indexOf(entryIngredient.toLowerCase()) > -1
             });
-        }
+        } */
 
         // Formatage liste
         listIngredients = this.formateList(listIngredients);
@@ -76,13 +52,9 @@ export default class RecipeSearch {
         // Supression des noms tags de la liste via liste d'exclusion
         if (exclusionList) {
             exclusionList.forEach((el) => {
-                // Si l'élément existe, le retirer de la liste
-                if (listIngredients.indexOf(el) !== -1) {
-                    listIngredients.splice(listIngredients.indexOf(el), 1);
-                }
+                listIngredients.splice(listIngredients.indexOf(el), 1);
             })
         }
-        console.log(listIngredients);
         return listIngredients
     }
 
@@ -97,15 +69,13 @@ export default class RecipeSearch {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
 
-        //Filtre l'array de string appareils en fonction de la saisie
-        if (entryAppareil) {
-            listAppareils = listAppareils.filter((el) => {
+        //Filtre l'array de string Appareil en fonction de la recherche saisie
+        /* if (entryAppareil) {
+            listAppareils = listAppareil.filter((el) => {
                 return el.indexOf(entryAppareil.toLowerCase()) > -1
             });
         }
-
-        // Obj Set -> supprime doublons, spread [... set] conversion set -> array
-        listAppareils = [... new Set(listAppareils)];
+        */
 
         // Formatage liste
         listAppareils = this.formateList(listAppareils)
@@ -113,17 +83,14 @@ export default class RecipeSearch {
         // Liste exclusion tags
         if (exclusionList) {
             exclusionList.forEach((el) => {
-                // Si l'élément existe, le retirer de la liste
-                if (listAppareils.indexOf(el) !== -1) {
-                    listAppareils.splice(listAppareils.indexOf(el), 1);
-                }
+                listAppareils.splice(listAppareils.indexOf(el), 1);
             })
         }
-        console.log(listAppareils);
+
         return listAppareils
     }
 
-    getUstensilsList(filteredRecipes, exclusionList, entryUstensil) {
+    getUstensilList(filteredRecipes, exclusionList, entryUstensil) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
         let listUstensils = (filteredRecipes || this.recipes).map((el) => {
@@ -138,12 +105,13 @@ export default class RecipeSearch {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listUstensils = [... new Set(listUstensils)];
 
-        //Filtre l'array de string appareils en fonction de la saisie
-        if (entryUstensil) {
-            listUstensils = listUstensils.filter((el) => {
+        //Filtre l'array de string Ustensil en fonction de la recherche saisie
+        /* if (entryUstensil) {
+            listUstensils = listUstensil.filter((el) => {
                 return el.indexOf(entryUstensil.toLowerCase()) > -1
             });
         }
+        */
 
         // Formatage liste
         listUstensils = this.formateList(listUstensils);
@@ -154,7 +122,7 @@ export default class RecipeSearch {
                 listUstensils.splice(listUstensils.indexOf(el), 1);
             })
         }
-        console.log(listUstensils);
+
         return listUstensils
     }
 
@@ -172,7 +140,73 @@ export default class RecipeSearch {
         })
     }
 
+    // Filtre du tableau de recettes
+    filterRecipes(filterType, tagName, filteredRecipes) {
+        if (filterType === "ingredientList") {
+            filteredRecipes = filteredRecipes.filter((objRecipe) => {
+                return objRecipe.ingredients.find((el) => {
+                    return el.ingredient.toLowerCase() === tagName.toLowerCase();
+                })
+            })
+        } else if (filterType === "appareilList") {
+            filteredRecipes = filteredRecipes.filter((el) => {
+                return el.appliance.toLowerCase() === tagName.toLowerCase();
+            })
+        } else if (filterType === "ustensilList") {
+            filteredRecipes = filteredRecipes.filter((el) => {
+                return el.ustensils.find((el) => {
+                    return el.toLowerCase() === tagName.toLowerCase();
+                })
+            })
+        }
+        return filteredRecipes;
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    rechercheGlobale(saisie) {
+        const saisieLow = saisie.toLowerCase();
+        const arrayRecipeFiltered = [];
+        this.recipes.forEach((instRecipe) => {
+            const nameLow = instRecipe.name.toLowerCase();
+            const descriptionLow = instRecipe.description.toLowerCase();
+
+            if (nameLow.includes(saisieLow)) {
+                arrayRecipeFiltered.push(instRecipe)
+            }
+            else if (descriptionLow.includes(saisieLow)) {
+                arrayRecipeFiltered.push(instRecipe)
+            }
+            else {
+                instRecipe.ingredients.forEach((ingredients) => {
+                    // ingredients = {ingre: "kiwi", quantity:, unit:}
+                    const ingredientLow = ingredients.ingredient.toLowerCase();
+                    if (ingredientLow.includes(saisieLow)) {
+                        arrayRecipeFiltered.push(instRecipe)
+                    }
+                })
+            }
+        })
+        return arrayRecipeFiltered
+    }
 
 
 

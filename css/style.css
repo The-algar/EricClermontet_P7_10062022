@@ -167,6 +167,9 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   background-color: #ed6454;
   z-index: 5;
 }
+.noFilter {
+  font-weight: normal;
+}
 /********************** articles recettes **********************/
 .sectionRecettes {
   display: flex;

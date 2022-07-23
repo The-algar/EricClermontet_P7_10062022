@@ -2,20 +2,22 @@
 import RecipeSearch from "../search/search.js";
 import RecipeFactory from "../factories/RecipeFactory.js";
 
-/*** Déclarations globales ***/
-let originalRecipes = [];
-
 let filteredRecipes = [];
+
 let selectedTags = {
    ingredientList: [],
    appareilList: [],
    ustensilList: []
 };
 
+//AM
+let originalRecipes = [];
+
+
 /* Récupère tableau recipe via fetch */
 async function init() {
 
-   let nodeSectionRecette = document.querySelector(".sectionRecettes");
+   let indexRecipeSection = document.querySelector(".sectionRecettes");
    const indexSearch = document.querySelector("#globalSearch");
    const recipeSearch = new RecipeSearch();
 
@@ -27,9 +29,13 @@ async function init() {
    /* récupération data + ajout propriété recipeSearch: array 50 instances recette */
    await recipeSearch.fetchData();
 
-   // Global settings
+   // Initialisation tableau recettes filtrées
    filteredRecipes = [...recipeSearch.recipes];
 
+   // Initialisation affichage des recettes
+   recipesDisplay();
+
+   // AM
    originalRecipes = [...recipeSearch.recipes];
 
    /************
@@ -37,13 +43,13 @@ async function init() {
    *************/
 
    const inputIngredient = document.querySelector("#searchIngredient");
-   
+
 
    /*** Click sur menu dropDown -> ouvre / ferme ***/
-   const buttonFilter = document.querySelectorAll(".openDropdown");
+   const boutonFilter = document.querySelectorAll(".openDropdown");
 
    /* Listener sur les 3 boutons filtres: 1er clic: ouvre dropDown, 2eme clic: ferme */
-   buttonFilter.forEach((el) => {
+   boutonFilter.forEach((el) => {
       el.addEventListener("click", (event) => {
          // Si <input> filtre cliqué contient class appear
          if (!event.target.nextElementSibling.classList.contains("appear")) {
@@ -55,7 +61,7 @@ async function init() {
                createFilterList("#appareilList", recipeSearch.getAppareilsList(filteredRecipes, selectedTags.appareilList));
             }
             else if (event.target.id === "searchUstensil") {
-               createFilterList("#ustensilList", recipeSearch.getUstensilsList(filteredRecipes, selectedTags.ustensilList));
+               createFilterList("#ustensilList", recipeSearch.getUstensilList(filteredRecipes, selectedTags.ustensilList));
             }
 
             // Ouvre le filtre cliqué, el.target = <input> cliqué
@@ -68,159 +74,152 @@ async function init() {
    })
 
 
-   /* Saisie champ recherche filtre */
+   /* entry champ recherche filtre */
    inputIngredient.addEventListener("change", (event) => {
       const entry = event.target.value;
       createFilterList("#ingredientList", recipeSearch.getIngredientsList(null, entry));
-      createFilterList("#appareilList", recipeSearch.getAppareilsList(null, entry));
-      createFilterList("#ustensilList", recipeSearch.getUstensilsList(null, entry));
       // listenListCreateTags();
    })
+
+   // AM ajout init
+   function createFilterList(indexFilter, filterList) {
+      const indexFilterItem = document.querySelector(indexFilter);
+
+      // Supression des listes existantes
+      indexFilterItem.innerHTML = null;
+
+      // Si filterList vide
+      if (filterList.length === 0) {
+         indexFilterItem.innerHTML = `<span class="noFilter"> Aucun filtre disponible </span>`;
+
+      } else {
+         // Ajout des nouvelles listes
+         filterList.forEach((el) => {
+            const list = document.createElement("li");
+            list.classList.add("itemLiFilter");
+            list.innerHTML = el;
+            indexFilterItem.appendChild(list);
+            // addEventListener sur chaque liste créee
+            list.addEventListener("click", (event) => onSelectTag(event));
+         })
+      }
+   }
 
    /************
    *************     TAG     *******************
    *************/
 
+   function onSelectTag(event) {
+      const indexSectionTag = document.querySelector(".sectionTags");
+      const tagName = event.target.textContent;
+      const indexContListItem = event.target.parentElement;
 
-   
+      /******* Clic sur liste *******/
+      // Depuis <li> cliquée vers <input> de la <li>
+      closeDropDown(indexContListItem.previousElementSibling);
+
+      /*** Création du tag ***/
+      const tagIndex = document.createElement("button");
+      tagIndex.innerHTML = `${tagName}<img src="assets/icons/croix.svg" alt="" />`;
+      tagIndex.classList.add("btnTag");
+      // Ajout data type de tag + couleur
+      if (indexContListItem.id === "ingredientList") {
+         tagIndex.classList.add("colorIngredient");
+         tagIndex.setAttribute("data-id", "ingredientList")
+      } else if (indexContListItem.id === "appareilList") {
+         tagIndex.classList.add("colorAppareil");
+         tagIndex.setAttribute("data-id", "appareilList")
+      } else if (indexContListItem.id === "ustensilList") {
+         tagIndex.classList.add("colorUstensil");
+         tagIndex.setAttribute("data-id", "ustensilList")
+      }
+      // Génération Tag
+      indexSectionTag.appendChild(tagIndex);
+      // Ajout listener sur tag crée avec suppression tag si clic
+      tagIndex.addEventListener("click", (event) => onRemoveTag(event));
+
+      // Object.key <=> array 
+      selectedTags[indexContListItem.id].push(tagName);
+
+      // Filtre tableau recette avec nom tag
+      filteredRecipes = recipeSearch.filterRecipes(event.target.parentElement.id, event.target.textContent, filteredRecipes);
+
+      // Affichage recettes filtrées
+      recipesDisplay();
+      console.log(filteredRecipes);
+   }
+
+   // Supprime un tag, filtre le tableau filteredRecipes avec tags restants
+   function onRemoveTag(event) {
+
+      // Supression nom tag de la liste du filtre
+      // idTag -> tag ingredient ou appareil
+      const idTag = event.target.dataset.id;
+      // Liste des tags cliqués par type
+      const arrayTag = selectedTags[idTag];
+      // Récupération index du nom du tag 
+      const indexTag = arrayTag.indexOf(event.target.textContent);
+      // Suppression nom Tag
+      arrayTag.splice(indexTag, 1);
+
+      // Supression tag
+      event.target.remove();
+
+      // Remise état origine tableau recette
+      filteredRecipes = [...originalRecipes];
+
+      // Filtre filteredRecipes avec tags non supprimés:
+      if (selectedTags["ingredientList"].length > 0)
+         selectedTags["ingredientList"].forEach((el) => {
+            filteredRecipes = recipeSearch.filterRecipes("ingredientList", el, filteredRecipes)
+         })
+      if (selectedTags["appareilList"].length > 0)
+         selectedTags["appareilList"].forEach((el) => {
+            filteredRecipes = recipeSearch.filterRecipes("appareilList", el, filteredRecipes)
+         })
+      if (selectedTags["ustensilList"].length > 0)
+         selectedTags["ustensilList"].forEach((el) => {
+            filteredRecipes = recipeSearch.filterRecipes("ustensilList", el, filteredRecipes)
+         })
+
+      // Affichage recette filtrées
+      recipesDisplay();
+      console.log(filteredRecipes);
+
+   }
+
+   /************
+   *************     Affichage des recettes     *******************
+   *************/
+
+   function recipesDisplay() {
+
+      // Supression des recettes préexistantes
+      indexRecipeSection.innerHTML = null;
+
+      // Affichage du html des nouvelles recettes
+      filteredRecipes.forEach((instRecipe) => {
+         const recipeFactory = new RecipeFactory(instRecipe);
+         indexRecipeSection.appendChild(recipeFactory.createRecipeCards());
+      })
+   }
+
+
    /************
    *************     Recherche globale     *******************
    *************/
 
    // EventListener sur <input> champ de recherche recette
    indexSearch.addEventListener("input", (event) => {
-      /* Méthode entrySearch filtre tableau instance recette en fonction de l'entry input */
-      filteredRecipes = recipeSearch.entrySearch(event.target.value);
-      // Supression des recettes préexistantes à la nouvelle saisie
-      nodeSectionRecette.innerHTML = null;
-      // Affichage du html des nouvelles recettes
-      filteredRecipes.forEach((instRecipe) => {
-         const recipeFactory = new RecipeFactory(instRecipe);
-         nodeSectionRecette.appendChild(recipeFactory.createRecipeCards());
-      })
+      /* Méthode rechercheGlobale filtre tableau instance recette en fonction entry input */
+      filteredRecipes = recipeSearch.rechercheGlobale(event.target.value);
+      
+      recipesDisplay()
+      
    })
 }
 init();
 
-
-
-function createFilterList(nodeFilter, filterList) {
-   const indexFilterItem = document.querySelector(nodeFilter);
-
-   // Supression des listes existantes
-   indexFilterItem.innerHTML = null;
-
-   // Si filterList vide
-   if (filterList.length === 0) {
-      indexFilterItem.innerHTML = `Aucun filtre disponible`;
-
-   } else {
-      // Ajout des nouvelles listes
-      filterList.forEach((el) => {
-         const list = document.createElement("li");
-         list.classList.add("itemLiFilter");
-         list.innerHTML = el;
-         indexFilterItem.appendChild(list);
-         // addEventListener sur chaque liste créee
-         list.addEventListener("click", (event) => onSelectTag(event));
-      })
-   }
-}
-
-
-function onSelectTag(event) {
-   const indexSectionTag = document.querySelector(".sectionTags");
-   const tagName = event.target.textContent;
-   const indexContListItem = event.target.parentElement;
-
-   /******* Clic sur liste *******/
-   // Depuis <li> cliquée vers <input> de la <li>
-   closeDropDown(indexContListItem.previousElementSibling);
-
-   /*** Création du tag ***/
-   const tagNode = document.createElement("button");
-   tagNode.innerHTML = `${tagName}<img src="assets/icons/croix.svg" alt="" />`;
-   tagNode.classList.add("btnTag");
-   // Ajout data type de tag + couleur
-   if (indexContListItem.id === "ingredientList") {
-      tagNode.classList.add("colorIngredient");
-      tagNode.setAttribute("data-id", "ingredientList")
-   } else if (indexContListItem.id === "appareilList") {
-      tagNode.classList.add("colorAppareil");
-      tagNode.setAttribute("data-id", "appareilList")
-   } else if (indexContListItem.id === "ustensilList") {
-      tagNode.classList.add("colorUstensil");
-      tagNode.setAttribute("data-id", "ustensilList")
-   }
-   // Génération Tag
-   indexSectionTag.appendChild(tagNode);
-   // Ajout listener sur tag crée avec suppression tag si clic
-   tagNode.addEventListener("click", (event) => onRemoveTag(event));
-
-   // Object.key <=> array 
-   selectedTags[indexContListItem.id].push(tagName);
-
-   // Filtre tableau recette avec nom tag
-   filterRecipes(event.target.parentElement.id, event.target.textContent);
-   console.log(filteredRecipes);
-}
-
-// Supprime un tag, filtre le tableau filteredRecipes avec tags restants
-function onRemoveTag(event) {
-
-// Supression nom tag de la liste du filtre
-// idTag -> tag ingredient ou appareil
-const idTag = event.target.dataset.id;
-// Liste des tags cliqués par type
-const arrayTag = selectedTags[idTag];
-// Récupération index du nom du tag 
-const indexTag = arrayTag.indexOf(event.target.textContent);
-// Suppression nom Tag
-arrayTag.splice(indexTag, 1);
-
-// Supression tag
-event.target.remove();
-
-// Remise état origine tableau recette
-filteredRecipes = [...originalRecipes];
-
-// Filtre filteredRecipes avec tags non supprimés:
-if (selectedTags["ingredientList"].length > 0)
-   selectedTags["ingredientList"].forEach((el) => {
-      filterRecipes("ingredientList", el)
-   })
-if (selectedTags["appareilList"].length > 0)
-   selectedTags["appareilList"].forEach((el) => {
-      filterRecipes("appareilList", el)
-   })
-if (selectedTags["ustensilList"].length > 0)
-   selectedTags["ustensilList"].forEach((el) => {
-      filterRecipes("ustensilList", el)
-   })
-console.log(filteredRecipes);
-}
-
-// AM A METTRE DS METHODE
-// Filtre du tableau de recettes
-function filterRecipes(filterType, tagName) {
-   if (filterType === "ingredientList") {
-      filteredRecipes = filteredRecipes.filter((objRecipe) => {
-         return objRecipe.ingredients.find((el) => {
-            return el.ingredient.toLowerCase() === tagName.toLowerCase();
-         })
-      })
-   } else if (filterType === "appareilList") {
-      filteredRecipes = filteredRecipes.filter((el) => {
-         return el.appliance.toLowerCase() === tagName.toLowerCase();
-      })
-   } else if (filterType === "ustensilList") {
-      filteredRecipes = filteredRecipes.filter((el) => {
-         return el.ustensils.find((el) => {
-            return el.toLowerCase() === tagName.toLowerCase();
-         })
-      })
-   }
-}
 
 
 /************
@@ -260,7 +259,7 @@ function closeDropDown(filterInputNode) {
       filterInputNode.setAttribute("value", "Ingredients")
    } else if (filterInputNode.id === "searchAppareil") {
       filterInputNode.setAttribute("value", "Appareils")
-   }  else if (filterInputNode.id === "searchUstensil") {
+   } else if (filterInputNode.id === "searchUstensil") {
       filterInputNode.setAttribute("value", "Ustensiles")
    }
 }
