@@ -18,23 +18,23 @@
   border: none;
 }
 .search input::-webkit-input-placeholder {
-  color: #c7bebe;
+  color: #ADADAD; /*#e7e7e7*/
   font-size: 1.35em;
 }
 .search input::-moz-placeholder {
-  color: #c7bebe;
+  color: #ADADAD; /*#e7e7e7*/
   font-size: 1.35em;
 }
 .search input:-ms-input-placeholder {
-  color: #c7bebe;
+  color: #ADADAD; /*#e7e7e7*/
   font-size: 1.35em;
 }
 .search input::-ms-input-placeholder {
-  color: #c7bebe;
+  color: #ADADAD; /*#e7e7e7*/
   font-size: 1.35em;
 }
 .search input::placeholder {
-  color: #c7bebe;
+  color: #ADADAD; /*#e7e7e7*/
   font-size: 1.35em;
 }
 .search img {
@@ -43,22 +43,21 @@
   right: 15px;
 }
 
- /********************** Tags **********************/
- .sectionTags {
+/********************** tags **********************/
+.sectionTags {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 5px; padding-bottom: 15px;  
+  padding-top: 5px;
 }
-
 .btnTag img {
   pointer-events: none;
 }
-/********************** Bouton filtres **********************/
+
+/********************** filtres **********************/
 .sectionFiltres {
   display: flex;
   justify-content: flex-start;
-  flex-direction: row;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 .colorIngredient {
   background-color: #3282f7;
@@ -74,20 +73,16 @@
 .disappear {
   display: none;
 }
-.disappear.appear { /* display: block; */
+.disappear.appear {
   display: flex;
-  justify-content: flex-start;
-  padding: 0 1rem 0 1rem;
-  max-height: 400px;
 }
-.unsetFilter { /*width: unset; height: unset */
-  width: 50%;
+.widthFilter {
+  width: 54%;
 }
 .btnFilter {
   display: flex;
   align-items: center;
   position: relative;
-  padding: 0 30px 0;
 }
 .btnFilter span {
   text-align: center;
@@ -96,14 +91,16 @@
   position: absolute;
   right: 10px;
   top: 30px;
+  pointer-events: none;
 }
 .rotate {
   transform: rotate(180deg);
 }
 .btnFilter input {
-  width: 90%;
+  width: 100%;
   height: 70px;
-  padding-left: 1rem;
+  padding: 0 18px 0 16px;
+  border-radius: 6px;
   color: white;
   font-size: 1em;
   font-weight: bold;
@@ -111,43 +108,42 @@
   outline: none;
 }
 .btnFilter input::-webkit-input-placeholder {
-  color: #E7E7E7;
+  color: rgba(231, 231, 231, 0.5); /* rgb(127, 176, 250) */
 }
 .btnFilter input::-moz-placeholder {
-  color: #E7E7E7;
+  color: rgba(231, 231, 231, 0.5); /* rgb(127, 176, 250) */
 }
 .btnFilter input:-ms-input-placeholder {
-  color: #E7E7E7;
+  color: rgba(231, 231, 231, 0.5); /* rgb(127, 176, 250) */
 }
 .btnFilter input::-ms-input-placeholder {
-  color: #E7E7E7;
+  color: rgba(231, 231, 231, 0.5); /* rgb(127, 176, 250) */
 }
 .btnFilter input::placeholder {
-  color: #E7E7E7;
+  color: rgba(231, 231, 231, 0.5); /* rgb(127, 176, 250) */
 }
-/* retire'x'du champ input from Chrome */
+/* retire barre de scroll 'x'du champ input from Chrome */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration { display: none; }
-
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
 .btnFilter ul {
   position: absolute;
-  bottom: -390px;
+  top: 66px;
   left: 0px;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  min-width: 94%;
-  height: 400px;
-  padding: 0;
-  margin: 0;
-  background-color: #3282f7;
+  width: 100%;
+  max-height: 400px;
+  padding: 0px 0px 10px 0px;
+  margin: 0px;
   overflow: scroll;
-  overflow-x: hidden
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 0px 0px 6px 6px;
 }
 .btnFilter ul li {
   width: 30%;
@@ -157,19 +153,27 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 .btnFilter #ingredientList {
   background-color: #3282f7;
-  z-index: 5;
 }
 .btnFilter #appareilList {
   background-color: #68d9a4;
-  z-index: 5;
 }
 .btnFilter #ustensilList {
   background-color: #ed6454;
-  z-index: 5;
 }
 .noFilter {
   font-weight: normal;
+  padding: 0 0 17px 17px; 
 }
+.itemLiFilter{
+ transform: scale(1);
+}
+.itemLiFilter:hover {
+  cursor: pointer;
+  transform: scale(1.09) translateX(6px);
+  transition: transform 0.1s linear;
+  
+}
+
 /********************** articles recettes **********************/
 .sectionRecettes {
   display: flex;
@@ -235,16 +239,16 @@ article {
   font-weight: bold;
 }
 .description p {
-  height: 89px;
+  height: 106px;
   width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: "Roboto", sans-serif;
   font-size: 0.78em;
   margin: 0;
-  /* line clamp: ellipsis sur multilignes */
+  /* line clamp: ellipsis sur multilignes (6 et 91) */
   display: -webkit-box;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
 }
 

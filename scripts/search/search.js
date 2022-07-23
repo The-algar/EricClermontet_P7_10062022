@@ -1,18 +1,17 @@
 import Recipe from "../model/Recipe.js";
 
-export default class RecipeService {
+export default class RecipeSearch {
     constructor() {
         this.recipes = [];
-        this.filteredRecipes = [];
     }
 
     /* Récupération data fetch: tableau recette -> tableau instance recette  */
     async fetchData() {
         return fetch("data/recipes.json")  // Promise résolue: serveur répond
-            .then((response) => {        // Promise résolue: data chargée  
+            .then((response) => {          // Promise résolue: data chargée  
                 return response.json();
             })
-            .then(({ recipes }) => {      // Promise résolue: retourne data
+            .then(({ recipes }) => {       // Promise résolue: retourne data
                 // Recipes ->  [{..}, {..},] 50 objets recette
                 // Mise à jour propriété class -> 50 instance de class Recipe
                 this.recipes = recipes.map((objRecipe) => {
@@ -22,14 +21,14 @@ export default class RecipeService {
             })
     }
 
-    // Extrait liste ingrédients du tableau recette complet ou filtré
-    // Si recherche filtre -> filte ingrédients qui match avec saisie
+    // Retourne liste d'ingrédients du tableau recette
+    // Si recherche filtre -> filtre ingrédients qui match avec recherche
     getIngredientsList(filteredRecipes, exclusionList, entryIngredient) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
-            return objRecette.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecipe) => {
+            return objRecipe.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
@@ -39,12 +38,12 @@ export default class RecipeService {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
 
-        //Filtre l'array de string ingrédients en fonction de la recherche saisie
+        //Filtre l'array de string ingrédients en fonction de la recherche
         /*if (entryIngredient) {
             listIngredients = listIngredients.filter((el) => {
                 return el.indexOf(entryIngredient.toLowerCase()) > -1
             });
-        } */
+        }*/
 
         // Formatage liste
         listIngredients = this.formateList(listIngredients);
@@ -58,6 +57,7 @@ export default class RecipeService {
         return listIngredients
     }
 
+    // Retourne liste d'appareils du tableau recette
     getAppareilsList(filteredRecipes, exclusionList, entryAppareil) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
@@ -69,13 +69,13 @@ export default class RecipeService {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
 
-        //Filtre l'array de string Appareil en fonction de la recherche saisie
-        /* if (entryAppareil) {
-            listAppareils = listAppareil.filter((el) => {
+        //Filtre l'array de string Appareil en fonction de la recherche
+        /*if (entryAppareil) {
+            listAppareils = listAppareils.filter((el) => {
                 return el.indexOf(entryAppareil.toLowerCase()) > -1
             });
-        }
-        */
+        } */
+
 
         // Formatage liste
         listAppareils = this.formateList(listAppareils)
@@ -90,6 +90,7 @@ export default class RecipeService {
         return listAppareils
     }
 
+    // Retourne liste d'ustensiles du tableau recette
     getUstensilList(filteredRecipes, exclusionList, entryUstensil) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
@@ -105,13 +106,12 @@ export default class RecipeService {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listUstensils = [... new Set(listUstensils)];
 
-        //Filtre l'array de string Ustensil en fonction de la recherche saisie
-        /* if (entryUstensil) {
-            listUstensils = listUstensil.filter((el) => {
+        //Filtre l'array de string Ustensil en fonction de la recherche
+        /*if (entryUstensil) {
+            listUstensils = listUstensils.filter((el) => {
                 return el.indexOf(entryUstensil.toLowerCase()) > -1
             });
-        }
-        */
+        } */
 
         // Formatage liste
         listUstensils = this.formateList(listUstensils);
@@ -140,7 +140,7 @@ export default class RecipeService {
         })
     }
 
-    // Filtre du tableau de recettes
+    // Filtre tableau de recettes fonction tag
     filterRecipes(filterType, tagName, filteredRecipes) {
         if (filterType === "ingredientList") {
             filteredRecipes = filteredRecipes.filter((objRecipe) => {
@@ -163,43 +163,28 @@ export default class RecipeService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    rechercheGlobale(saisie) {
-        const saisieLow = saisie.toLowerCase();
+    // Filtre tableau recette en fonction de l'input recherche globale
+    rechercheGlobale(entry, filteredRecipes) {
         const arrayRecipeFiltered = [];
-        this.recipes.forEach((instRecipe) => {
+        const entryLow = entry.toLowerCase();
+
+        console.log(filteredRecipes);
+
+        filteredRecipes.forEach((instRecipe) => {
             const nameLow = instRecipe.name.toLowerCase();
             const descriptionLow = instRecipe.description.toLowerCase();
 
-            if (nameLow.includes(saisieLow)) {
+            if (nameLow.includes(entryLow)) {
                 arrayRecipeFiltered.push(instRecipe)
             }
-            else if (descriptionLow.includes(saisieLow)) {
+            else if (descriptionLow.includes(entryLow)) {
                 arrayRecipeFiltered.push(instRecipe)
             }
             else {
                 instRecipe.ingredients.forEach((ingredients) => {
-                    // ingredients = {ingre: "kiwi", quantity:, unit:}
                     const ingredientLow = ingredients.ingredient.toLowerCase();
-                    if (ingredientLow.includes(saisieLow)) {
+                    // ingredients = {ingre: "kiwi", quantity:, unit:}
+                    if (ingredientLow.includes(entryLow)) {
                         arrayRecipeFiltered.push(instRecipe)
                     }
                 })
@@ -207,8 +192,5 @@ export default class RecipeService {
         })
         return arrayRecipeFiltered
     }
-
-
-
 
 }
