@@ -13,15 +13,12 @@ let selectedTags = {
    ingredientList: [], appareilList: [], ustensilList: []
 };
 
+
+// instance globale de class RecipeSearch
 const recipeSearch = new RecipeSearch();
 
 /* Récupère tableau recipe via fetch */
 async function init() {
-
-   let indexRecipeSection = document.querySelector(".sectionRecettes");
-   const indexSearch = document.querySelector("#globalSearch");
-
-   //const recipeSearch = new RecipeSearch();
 
    /************
    *************     FETCH     *******************
@@ -30,14 +27,16 @@ async function init() {
    /* récupération data + ajout propriété recipeSearch: array 50 instances recette */
    await recipeSearch.fetchData();
 
-   // Initialisation tableau recettes filtrées
+   // Initialisation tableaux recettes
    filteredRecipes = [...recipeSearch.recipes];
+   originalRecipes = [...recipeSearch.recipes];
 
    // Initialisation affichage des recettes
    recipesDisplay(filteredRecipes); // Si pas de tag = affiche les 50 recettes originales
 
-   // Initialisation tableau recettes non filtrées
-   originalRecipes = [...recipeSearch.recipes];
+}
+init();
+
 
    /************
    *************     FILTRES     *******************
@@ -72,7 +71,7 @@ async function init() {
    })
 
 
-   /* Saisie champ recherche filtre */
+   /* Saisie champ recherche par filtres */
    const inputFilter = document.querySelectorAll(".inputFilter");
     
    inputFilter.forEach((el) => {
@@ -121,7 +120,7 @@ async function init() {
 
    /********* Ajout tag *********/
    function onSelectTag(event) {
-      const nodeSectionTag = document.querySelector(".sectionTags");
+      const indexSectionTag = document.querySelector(".sectionTags");
       const tagName = event.target.textContent;
       const indexContListItem = event.target.parentElement;
 
@@ -144,8 +143,8 @@ async function init() {
          tagIndex.classList.add("colorUstensil");
          tagIndex.setAttribute("data-id", "ustensilList")
       }
-      // Génération Tag
-      nodeSectionTag.appendChild(tagIndex);
+      // Génération des Tags
+      indexSectionTag.appendChild(tagIndex);
       // Ajout listener sur tag crée avec suppression tag si clic
       tagIndex.addEventListener("click", (event) => onRemoveTag(event));
 
@@ -226,6 +225,9 @@ async function init() {
    /************
    *************     Recherche globale     *******************
    *************/
+   
+   const indexSearch = document.querySelector("#globalSearch");
+   let indexRecipeSection = document.querySelector(".sectionRecettes");
 
    // EventListener sur <input> champ de recherche recette
    indexSearch.addEventListener("input", (event) => {
@@ -240,7 +242,7 @@ async function init() {
          /* Modifie tableau filteredRecipes fonction entry input */
          filteredRecipes = recipeSearch.itemsMainSearch(event.target.value, filteredRecipes);
 
-         // Si entry inconnue
+         // Si recherche entrée est inconnue
          if (filteredRecipes.length === 0) {
 
             // Reset tableau recette
@@ -258,7 +260,7 @@ async function init() {
 
          } else {
 
-            // Si entry valide -> affichage recettes
+            // Si recherche valide -> affichage recettes
             recipesDisplay(filteredRecipes)
          }
       } else {
@@ -280,8 +282,20 @@ async function init() {
          }
       }
    })
-}
-init();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

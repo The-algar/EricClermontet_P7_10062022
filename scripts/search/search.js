@@ -148,10 +148,10 @@ export default class RecipeSearch {
     }
 
     // Filtre tableau de recettes en fonction de l'entry dans le search filter
-    filterListBySearchEntry(listIngredients, saisieIngredient) {
-        // Filtre l'array de string ingrédients en fct saisie
+    filterListBySearchEntry(listIngredients, entryIngredient) {
+        // Filtre l'array de string ingrédients en fonction de l'ingrédient recherché
         return listIngredients = listIngredients.filter((el) => {
-            return el.indexOf(saisieIngredient.toLowerCase()) > -1
+            return el.indexOf(entryIngredient.toLowerCase()) > -1
         });
     }
     // Filtre tableau de recettes en fonction des Tags choisis
