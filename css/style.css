@@ -3,7 +3,7 @@
 @import url("header.css");
 @import url("components.css");
 
-/********************** search **********************/
+/********************** Search **********************/
 .search {
   position: relative;
   padding-bottom: 20px;
@@ -43,7 +43,7 @@
   right: 15px;
 }
 
-/********************** tags **********************/
+/********************** Tags **********************/
 .sectionTags {
   display: flex;
   flex-wrap: wrap;
@@ -53,11 +53,10 @@
   pointer-events: none;
 }
 
-/********************** filtres **********************/
+/********************** Filters **********************/
 .sectionFiltres {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
 }
 .colorIngredient {
   background-color: #3282f7;
@@ -69,7 +68,7 @@
   background-color: #ed6454;
 }
 
-/********************** boutons filtres **********************/
+/********************** Filter panel & search **********************/
 .disappear {
   display: none;
 }
@@ -99,7 +98,8 @@
 .btnFilter input {
   width: 100%;
   height: 70px;
-  padding: 0 18px 0 16px;
+  padding: 0 60px 0 17px;
+
   border-radius: 6px;
   color: white;
   font-size: 1em;
@@ -137,7 +137,7 @@ input[type="search"]::-webkit-search-results-decoration {
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
-  max-height: 400px;
+  max-height: 382px;
   padding: 0px 0px 10px 0px;
   margin: 0px;
   overflow: scroll;
@@ -174,7 +174,7 @@ input[type="search"]::-webkit-search-results-decoration {
   
 }
 
-/********************** articles recettes **********************/
+/********************** Recipe Cards (article) **********************/
 .sectionRecettes {
   display: flex;
   justify-content: space-between;
@@ -239,42 +239,21 @@ article {
   font-weight: bold;
 }
 .description p {
-  height: 106px;
+  height: 102px;
   width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: "Roboto", sans-serif;
   font-size: 0.78em;
   margin: 0;
+  line-height: 14.5px;
   /* line clamp: ellipsis sur multilignes (6 et 91) */
   display: -webkit-box;
   -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
 }
 
-/********************** Global Search **********************/
-.search .fa-search {
-  display: block;
-  position: absolute;
-  right: 20px;
-  bottom: 15px;
-  align-content: center;
-  font-size: 32px;
-  color: black;
- }
- .search button {
-  position: absolute;
-  justify-content: flex-end;
-  align-content: center;
-  top: 5px;
-  right: 5px;
-  height: 50px;
-  width: 110px;
-  background: none;
-
- }
-
-/* ********************* media queries articles recettes ********************* */
+/* ********************* Global Media Queries ********************* */
 
 @media screen and (max-width: 1300px) {
   .wrapper {
@@ -294,14 +273,31 @@ article {
     margin-bottom: 30px;
   }
 }
+@media screen and (max-width: 1000px) {
+  .sectionFiltres {
+    flex-direction: column;
+  }
+  .btnFilter {
+    width: 100%;
+    height: unset;
+  }
+  .widthFilter{
+    flex-direction:column;
+  }
+  .btnFilter ul {
+    position: static;
+}
+}
 @media screen and (max-width: 768px) {
   .sectionFiltres {
     flex-direction: column;
   }
   .btnFilter {
-    flex-direction: row;
+    flex-direction: column;
     width: inherit;
-    height: 5rem;
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
     padding: 0;
     margin: 0 0 25px 0;
   }
@@ -314,17 +310,12 @@ article {
     width: 100%;
     justify-content: flex-start;
   }
-  .disappear.appear { /* display: block; */
-    display: flex;
-    padding: 0 1rem 0 1rem;
-    max-height: 400px;
-  }
   .btnFilter {
     width: 100%;
   }
-  #ingredientFilter, #appareilFilter, #ustensilFilter {
+  /*#ingredientFilter, #appareilFilter, #ustensilFilter {
     margin-right: 0;
-  }
+  } */
 }
 @media screen and (max-width: 480px) {
   .wrapper {

@@ -3,24 +3,25 @@ import RecipeSearch from "../search/search.js";
 import RecipeFactory from "../factories/recipeFactory.js";
 
 /* GLobal Settings */
-let inputSearch = "";
 let filteredRecipes = [];
 let originalRecipes = [];
 
+// Saisie recherche globale
+let validSearch = "";
+
 let selectedTags = {
-   ingredientList: [],
-   appareilList: [],
-   ustensilList: []
+   ingredientList: [], appareilList: [], ustensilList: []
 };
 
+const recipeSearch = new RecipeSearch();
 
 /* Récupère tableau recipe via fetch */
 async function init() {
 
    let indexRecipeSection = document.querySelector(".sectionRecettes");
    const indexSearch = document.querySelector("#globalSearch");
-   const recipeSearch = new RecipeSearch();
 
+   //const recipeSearch = new RecipeSearch();
 
    /************
    *************     FETCH     *******************
@@ -35,21 +36,18 @@ async function init() {
    // Initialisation affichage des recettes
    recipesDisplay(filteredRecipes); // Si pas de tag = affiche les 50 recettes originales
 
-   // Initialisation tableau recettes d'origine
+   // Initialisation tableau recettes non filtrées
    originalRecipes = [...recipeSearch.recipes];
 
    /************
    *************     FILTRES     *******************
    *************/
-
-   const inputIngredient = document.querySelector("#searchIngredient");
-
-
+   
    /*** Click sur menu dropDown -> ouvre / ferme ***/
-   const boutonFilter = document.querySelectorAll(".openDropdown");
+   const btnFilter = document.querySelectorAll(".openDropdown");
 
    /* Listener sur les 3 boutons filtres: 1er clic: ouvre dropDown, 2eme clic: ferme */
-   boutonFilter.forEach((el) => {
+   btnFilter.forEach((el) => {
       el.addEventListener("click", (event) => {
          // Si <input> filtre cliqué contient class appear
          if (!event.target.nextElementSibling.classList.contains("appear")) {
@@ -75,15 +73,26 @@ async function init() {
 
 
    /* Saisie champ recherche filtre */
-   inputIngredient.addEventListener("change", (event) => {
-      const entry = event.target.value;
-      createFilterList("#ingredientList", recipeSearch.getIngredientsList(null, entry));
-      // listenListCreateTags();
+   const inputFilter = document.querySelectorAll(".inputFilter");
+    
+   inputFilter.forEach((el) => {
+      el.addEventListener("change", (event) => {
+         const saisie = event.target.value.toLowerCase();
+         console.log(event.target.id);
+         if (event.target.id === "searchIngredient") {
+            createFilterList("#ingredientList", recipeSearch.getIngredientsList(filteredRecipes, selectedTags.ingredientList, saisie));
+         } else if (event.target.id === "searchAppareil") {
+            createFilterList("#appareilList", recipeSearch.getAppareilsList(filteredRecipes, selectedTags.appareilList, saisie));
+         } else if (event.target.id === "searchUstensil") {
+            createFilterList("#ustensilList", recipeSearch.getUstensilList(filteredRecipes, selectedTags.ustensilList, saisie));
+         }
+      })
    })
 
+
    // Recettes originales ajout init
-   function createFilterList(nodeFilter, filterList) {
-      const indexFilterItem = document.querySelector(nodeFilter);
+   function createFilterList(indexFilter, filterList) {
+      const indexFilterItem = document.querySelector(indexFilter);
 
       // Supression des listes existantes
       indexFilterItem.innerHTML = null;
@@ -104,6 +113,7 @@ async function init() {
          })
       }
    }
+
 
    /************
    *************     TAG     *******************
@@ -143,8 +153,8 @@ async function init() {
       selectedTags[indexContListItem.id].push(tagName);
 
       // Filtre tableau recette avec nom tag
-      filteredRecipes = recipeSearch.filterRecipes(event.target.parentElement.id, event.target.textContent, filteredRecipes);
-
+      filteredRecipes = recipeSearch.filterByTag(event.target.parentElement.id, event.target.textContent, filteredRecipes);
+      
       // Affichage recettes filtrées
       recipesDisplay(filteredRecipes);
       console.log(filteredRecipes);
@@ -173,20 +183,20 @@ async function init() {
       // Filtre filteredRecipes avec tags non supprimés:
       if (selectedTags["ingredientList"].length > 0)
          selectedTags["ingredientList"].forEach((el) => {
-            filteredRecipes = recipeSearch.filterRecipes("ingredientList", el, filteredRecipes)
+            filteredRecipes = recipeSearch.filterByTag("ingredientList", el, filteredRecipes)
          })
       if (selectedTags["appareilList"].length > 0)
          selectedTags["appareilList"].forEach((el) => {
-            filteredRecipes = recipeSearch.filterRecipes("appareilList", el, filteredRecipes)
+            filteredRecipes = recipeSearch.filterByTag("appareilList", el, filteredRecipes)
          })
       if (selectedTags["ustensilList"].length > 0)
          selectedTags["ustensilList"].forEach((el) => {
-            filteredRecipes = recipeSearch.filterRecipes("ustensilList", el, filteredRecipes)
+            filteredRecipes = recipeSearch.filterByTag("ustensilList", el, filteredRecipes)
          })
 
       // Si saisie valide dans globalSearch: filtrer filteredRecipes   
-      if (inputSearch) {
-         filteredRecipes = recipeSearch.rechercheGlobale(inputSearch, filteredRecipes);
+      if (validSearch) {
+         filteredRecipes = recipeSearch.itemsMainSearch(validSearch, filteredRecipes);
       }
 
       // Affichage recette filtrées
@@ -224,11 +234,11 @@ async function init() {
       if (event.target.value.length > 2) {
 
          // Extraction valeur saisie
-         inputSearch = event.target.value;
-         console.log(inputSearch);
+         validSearch = event.target.value;
+         console.log(validSearch);
 
          /* Modifie tableau filteredRecipes fonction entry input */
-         filteredRecipes = recipeSearch.rechercheGlobale(event.target.value, filteredRecipes);
+         filteredRecipes = recipeSearch.itemsMainSearch(event.target.value, filteredRecipes);
 
          // Si entry inconnue
          if (filteredRecipes.length === 0) {
@@ -251,11 +261,10 @@ async function init() {
             // Si entry valide -> affichage recettes
             recipesDisplay(filteredRecipes)
          }
-
       } else {
 
          // Si entry < 3 lettre = pas de saisie
-         inputSearch = "";
+         validSearch = "";
 
          // Si pas de tag sélectionné
          if (selectedTags["ingredientList"].length === 0
@@ -287,7 +296,7 @@ function openDropDown(filterInputNode) {
    filterInputNode.parentElement.classList.add("widthFilter");
    filterInputNode.previousElementSibling.classList.add("rotate");
 
-   // Modification <input type="text" vers "search" 
+   // Modification <input type="button" vers "search" 
    filterInputNode.setAttribute("type", "search");
    filterInputNode.removeAttribute("value");
    // Changement nom placeholder fonction du filtre cliqué
@@ -305,7 +314,7 @@ function closeDropDown(filterInputNode) {
    filterInputNode.parentElement.classList.remove("widthFilter")
    filterInputNode.previousElementSibling.classList.remove("rotate");
 
-   // Modification <input type="search" vers "text" 
+   // Modification <input type="search" vers "button" 
    filterInputNode.setAttribute("type", "button");
    filterInputNode.removeAttribute("placeholder");
    // Modification valeur <input> en fonction filtre cliqué

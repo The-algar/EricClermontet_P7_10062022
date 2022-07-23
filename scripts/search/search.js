@@ -23,7 +23,7 @@ export default class RecipeSearch {
 
     // Retourne liste d'ingrédients du tableau recette
     // Si recherche filtre -> filtre ingrédients qui match avec recherche
-    getIngredientsList(filteredRecipes, exclusionList, entryIngredient) {
+    getIngredientsList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
@@ -38,44 +38,47 @@ export default class RecipeSearch {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
 
+        console.log(entry);
+        console.log(listIngredients);
+
         //Filtre l'array de string ingrédients en fonction de la recherche
-        /*if (entryIngredient) {
-            listIngredients = listIngredients.filter((el) => {
-                return el.indexOf(entryIngredient.toLowerCase()) > -1
-            });
-        }*/
+        if (entry) {
+            listIngredients = this.filterListBySearchEntry(listIngredients, entry)
+        }
+        console.log(listIngredients);
 
         // Formatage liste
         listIngredients = this.formateList(listIngredients);
-
+        console.log(exclusionList);
         // Supression des noms tags de la liste via liste d'exclusion
         if (exclusionList) {
             exclusionList.forEach((el) => {
-                listIngredients.splice(listIngredients.indexOf(el), 1);
+                // Si l'élément existe, le retirer de la liste
+                if (listIngredients.indexOf(el) !== -1) {
+                    listIngredients.splice(listIngredients.indexOf(el), 1);
+                }
             })
         }
+
+        console.log(listIngredients);
         return listIngredients
     }
 
     // Retourne liste d'appareils du tableau recette
-    getAppareilsList(filteredRecipes, exclusionList, entryAppareil) {
+    getAppareilsList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
         let listAppareils = (filteredRecipes || this.recipes).map((el) => {
             return el.appliance.toLowerCase()
         })
 
-        // Formatage liste
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
 
         //Filtre l'array de string Appareil en fonction de la recherche
-        /*if (entryAppareil) {
-            listAppareils = listAppareils.filter((el) => {
-                return el.indexOf(entryAppareil.toLowerCase()) > -1
-            });
-        } */
-
+        if (entry) {
+            listAppareils = this.filterListBySearchEntry(listAppareils, entry)
+        }
 
         // Formatage liste
         listAppareils = this.formateList(listAppareils)
@@ -83,7 +86,10 @@ export default class RecipeSearch {
         // Liste exclusion tags
         if (exclusionList) {
             exclusionList.forEach((el) => {
-                listAppareils.splice(listAppareils.indexOf(el), 1);
+                // Si l'élément existe, le retirer de la liste
+                if (listAppareils.indexOf(el) !== -1) {
+                    listAppareils.splice(listAppareils.indexOf(el), 1);
+                }
             })
         }
 
@@ -91,7 +97,7 @@ export default class RecipeSearch {
     }
 
     // Retourne liste d'ustensiles du tableau recette
-    getUstensilList(filteredRecipes, exclusionList, entryUstensil) {
+    getUstensilList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
         let listUstensils = (filteredRecipes || this.recipes).map((el) => {
@@ -100,18 +106,16 @@ export default class RecipeSearch {
             })
         })
 
-        // Formatage liste
+        // Supprime l'imbrication en créant un nouveau tableau avec tous les éléments des sous tableaux concaténés dans celui-ci récursivement 
         listUstensils = listUstensils.flat();
 
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listUstensils = [... new Set(listUstensils)];
 
         //Filtre l'array de string Ustensil en fonction de la recherche
-        /*if (entryUstensil) {
-            listUstensils = listUstensils.filter((el) => {
-                return el.indexOf(entryUstensil.toLowerCase()) > -1
-            });
-        } */
+        if (entry) {
+            listUstensils = this.filterListBySearchEntry(listUstensils, entry)
+        }
 
         // Formatage liste
         listUstensils = this.formateList(listUstensils);
@@ -119,7 +123,10 @@ export default class RecipeSearch {
         // Liste exclusion tags
         if (exclusionList) {
             exclusionList.forEach((el) => {
-                listUstensils.splice(listUstensils.indexOf(el), 1);
+                // Si l'élément existe, le retirer de la liste
+                if (listUstensils.indexOf(el) !== -1) {
+                    listUstensils.splice(listUstensils.indexOf(el), 1);
+                }
             })
         }
 
@@ -140,8 +147,15 @@ export default class RecipeSearch {
         })
     }
 
-    // Filtre tableau de recettes fonction tag
-    filterRecipes(filterType, tagName, filteredRecipes) {
+    // Filtre tableau de recettes en fonction de l'entry dans le search filter
+    filterListBySearchEntry(listIngredients, saisieIngredient) {
+        // Filtre l'array de string ingrédients en fct saisie
+        return listIngredients = listIngredients.filter((el) => {
+            return el.indexOf(saisieIngredient.toLowerCase()) > -1
+        });
+    }
+    // Filtre tableau de recettes en fonction des Tags choisis
+    filterByTag(filterType, tagName, filteredRecipes) {
         if (filterType === "ingredientList") {
             filteredRecipes = filteredRecipes.filter((objRecipe) => {
                 return objRecipe.ingredients.find((el) => {
@@ -163,8 +177,8 @@ export default class RecipeSearch {
     }
 
 
-    // Filtre tableau recette en fonction de l'input recherche globale
-    rechercheGlobale(entry, filteredRecipes) {
+    // Filtre tableau recette en fonction de la recherche globale
+    itemsMainSearch(entry, filteredRecipes) {
         const arrayRecipeFiltered = [];
         const entryLow = entry.toLowerCase();
 
