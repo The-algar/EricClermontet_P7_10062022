@@ -1,8 +1,12 @@
 import Recipe from "../model/Recipe.js";
 
-export default class RecipeSearch {
+/* ***************************************************************** */
+/* ******       V2 - FETCH RETURN DATA From JSON File         ****** */ 
+/* ***************************************************************** */
+export default class RecipeSearch { 
     constructor() {
         this.recipes = [];
+        this.originalRecipes = [];
     }
 
     /* Récupération data fetch: tableau recette -> tableau instance recette  */
@@ -13,14 +17,17 @@ export default class RecipeSearch {
             })
             .then(({ recipes }) => {       // Promise résolue: retourne data
                 // Recipes ->  [{..}, {..},] 50 objets recette
-                // Mise à jour propriété class -> 50 instance de class Recipe
+                // map -> 50 instances de class Recipes
                 this.recipes = recipes.map((objRecipe) => {
                     const recipesInst = new Recipe(objRecipe);
                     return recipesInst;
                 });
+                this.originalRecipes = [...this.recipes];
             })
     }
-
+/* ************************************************************************ */
+/* ******    V2 - FILTERED SEARCH BY INGREDIENT, APPAREL, USTENSIL   ****** */ 
+/* ************************************************************************ */    
     // Retourne liste d'ingrédients du tableau recette
     // Si recherche filtre -> filtre ingrédients qui match avec recherche
     getIngredientsList(filteredRecipes, exclusionList, entry) {
@@ -32,15 +39,14 @@ export default class RecipeSearch {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
+
         // Array d'array liste -> array string liste, supprime 1 imbrication    
         listIngredients = listIngredients.flat();
 
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listIngredients = [... new Set(listIngredients)];
-
         console.log(entry);
         console.log(listIngredients);
-
         //Filtre l'array de string ingrédients en fonction de la recherche
         if (entry) {
             listIngredients = this.filterListBySearchEntry(listIngredients, entry)
@@ -59,7 +65,6 @@ export default class RecipeSearch {
                 }
             })
         }
-
         console.log(listIngredients);
         return listIngredients
     }
@@ -92,7 +97,6 @@ export default class RecipeSearch {
                 }
             })
         }
-
         return listAppareils
     }
 
@@ -129,7 +133,6 @@ export default class RecipeSearch {
                 }
             })
         }
-
         return listUstensils
     }
 
@@ -154,18 +157,39 @@ export default class RecipeSearch {
             return el.indexOf(entryIngredient.toLowerCase()) > -1
         });
     }
+
     // Filtre tableau de recettes en fonction des Tags choisis
+    filterByArrayTag(selectedTags) {
+
+        // Remise état origine tableau recette
+        let filteredRecipes = [...this.originalRecipes];
+
+        // Filtre tableau recette en fonction tableau de tags
+        // Pour chaque tag, on filtre une nouvelle fois filteredRecipes
+        for (let i in selectedTags) {
+            selectedTags[i].forEach((tagName) => {
+                filteredRecipes = this.filterByTag(i, tagName, filteredRecipes)
+            })
+        }
+        return filteredRecipes
+    }
+
+
+    // Filtre le tableau recettes ils si contiennent le nom d'un tag
     filterByTag(filterType, tagName, filteredRecipes) {
+        /* Si tableau d'objet ingrédients contient string tag -> retourne l'objet recette */
         if (filterType === "ingredientList") {
             filteredRecipes = filteredRecipes.filter((objRecipe) => {
                 return objRecipe.ingredients.find((el) => {
                     return el.ingredient.toLowerCase() === tagName.toLowerCase();
                 })
             })
+        /* Si valeur de propriété appliance = string tag -> retourne objet recette */
         } else if (filterType === "appareilList") {
             filteredRecipes = filteredRecipes.filter((el) => {
                 return el.appliance.toLowerCase() === tagName.toLowerCase();
             })
+        /* Si le tableau ustensils contient string tag -> retourne objet recette */
         } else if (filterType === "ustensilList") {
             filteredRecipes = filteredRecipes.filter((el) => {
                 return el.ustensils.find((el) => {
@@ -179,7 +203,7 @@ export default class RecipeSearch {
 
     // Filtre tableau recette en fonction de la recherche globale
     itemsMainSearch(entry, filteredRecipes) {
-        const arrayRecipeFiltered = [];
+        const recipeFiltered = [];
         const entryLow = entry.toLowerCase();
 
         console.log(filteredRecipes);
@@ -188,23 +212,25 @@ export default class RecipeSearch {
             const nameLow = instRecipe.name.toLowerCase();
             const descriptionLow = instRecipe.description.toLowerCase();
 
+        // Si entry entry contenue dans nom recette, ajoute recette
             if (nameLow.includes(entryLow)) {
-                arrayRecipeFiltered.push(instRecipe)
+                recipeFiltered.push(instRecipe)
             }
+            // Ou si entry est contenue dans description recette, ajoute recette
             else if (descriptionLow.includes(entryLow)) {
-                arrayRecipeFiltered.push(instRecipe)
+                recipeFiltered.push(instRecipe)
             }
+            // Ou si entry est contenue dans liste d'ingrédients, ajoute recette
             else {
                 instRecipe.ingredients.forEach((ingredients) => {
                     const ingredientLow = ingredients.ingredient.toLowerCase();
-                    // ingredients = {ingre: "kiwi", quantity:, unit:}
                     if (ingredientLow.includes(entryLow)) {
-                        arrayRecipeFiltered.push(instRecipe)
+                        recipeFiltered.push(instRecipe)
                     }
                 })
             }
         })
-        return arrayRecipeFiltered
+        return recipeFiltered
     }
 
 }
