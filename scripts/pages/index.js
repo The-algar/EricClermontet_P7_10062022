@@ -1,266 +1,267 @@
-import RecipeSearch from "../search/search.js";
+import RecipeSearch from "../search/Search.js";
 import RecipeFactory from "../factories/recipeFactory.js";
 
-/* GLobal Settings */
+/*** Déclarations globales ***/
 let filteredRecipes = [];
 let originalRecipes = [];
 
-// Saisie recherche globale
+// Saisie recherche globale valide ou pas
 let validSearch = "";
 
 let selectedTags = {
-   ingredientList: [], 
-   appareilList: [], 
+   ingredientList: [],
+   appareilList: [],
    ustensilList: []
 };
 
-// instance globale de class Search
-const search = new RecipeSearch();
+// Instance globale de class RecipeSearch
+const recipeSearch = new RecipeSearch();
 
 /* Récupère tableau recipe via fetch */
 async function init() {
 
 /* **************************************** */
-/*              V2 - FETCH                  */ 
+/* ******         V2 - FETCH         ****** */
 /* **************************************** */
 
-   /* récupération data + ajout propriété search => array 50 instances recette */
-   await search.fetchData();
+   /* Récupération data + ajout propriété recipeSearch: array 50 instances recette */
+   await recipeSearch.fetchData();
 
    // Initialisation tableaux recettes
-   filteredRecipes = [...search.recipes];
-   originalRecipes = [...search.recipes];
+   filteredRecipes = [...recipeSearch.recipes];
+   originalRecipes = [...recipeSearch.recipes];
 
    // Initialisation affichage des 50 recettes
-   recipesDisplay(search.filterByArrayTag());
+   recipesDisplay(recipeSearch.filterByArrayTag());
 }
 init();
 
 
 /* **************************************** */
-/*            V2 - FILTRES                  */ 
+/* ******       V2 - FILTERS         ****** */
 /* **************************************** */
 
-   /*** Click sur menu dropDown -> ouvre / ferme ***/
-const buttonFilter = document.querySelectorAll(".openDropdown");
+/*** Click sur menu dropDown -> ouvre / ferme ***/
+const boutonFilter = document.querySelectorAll(".openDropdown");
 
 /* Listener sur 3 filtres: 1er clic: ouvre dropDown, 2eme clic: ferme. Génère la liste en fonction du filtre cliqué */
-buttonFilter.forEach((el) => {
-   el.addEventListener("click", (event) => {
-   // Si <input> filtre cliqué contient class appear
+boutonFilter.forEach((e) => {
+   e.addEventListener("click", (event) => {
+      // Si <input> filtre cliqué contient class appear
       if (!event.target.nextElementSibling.classList.contains("appear")) {
          /* Crée liste ingrédients en fonction du tableau recette filtré et du tag */
          if (event.target.id === "searchIngredient") {
-            createFilterList("#ingredientList", search.getIngredientsList(filteredRecipes, selectedTags.ingredientList));
+            createFilterList("#ingredientList", recipeSearch.getIngredientsList(filteredRecipes, selectedTags.ingredientList));
          }
          else if (event.target.id === "searchAppareil") {
-            createFilterList("#appareilList", search.getAppareilsList(filteredRecipes, selectedTags.appareilList));
+            createFilterList("#appareilList", recipeSearch.getAppareilsList(filteredRecipes, selectedTags.appareilList));
          }
          else if (event.target.id === "searchUstensil") {
-            createFilterList("#ustensilList", search.getUstensilList(filteredRecipes, selectedTags.ustensilList));
+            createFilterList("#ustensilList", recipeSearch.getUstensilList(filteredRecipes, selectedTags.ustensilList));
          }
 
-         // Ouvre le filtre cliqué, el.target = <input> cliqué
+         // Ouvre le filtre cliqué, e.target = <input> cliqué
          openDropDown(event.target);
 
-         } else {
-            closeDropDown(event.target);
-         }
-      })
+      } else {
+         closeDropDown(event.target);
+      }
    })
+})
 
 
 /*** Saisie champ recherche filtre ***/
 const inputFilter = document.querySelectorAll(".inputFilter");
-    
-// Si saisie dans champ de recherche filtre: régénération liste de filtres fonction entry
-inputFilter.forEach((el) => {
-   el.addEventListener("change", (event) => {
-      const entry = event.target.value.toLowerCase();
-         if (event.target.id === "searchIngredient") {
-         createFilterList("#ingredientList", search.getIngredientsList(filteredRecipes, selectedTags.ingredientList, entry));
-         } else if (event.target.id === "searchAppareil") {
-         createFilterList("#appareilList", search.getAppareilsList(filteredRecipes, selectedTags.appareilList, entry));
-         } else if (event.target.id === "searchUstensil") {
-         createFilterList("#ustensilList", search.getUstensilList(filteredRecipes, selectedTags.ustensilList, entry));
-         }
-      })
+
+// Si saisie dans champ de recherche filtre: régénération liste de filtres fonction saisie
+inputFilter.forEach((e) => {
+   e.addEventListener("change", (event) => {
+      const saisie = event.target.value.toLowerCase();
+      if (event.target.id === "searchIngredient") {
+         createFilterList("#ingredientList", recipeSearch.getIngredientsList(filteredRecipes, selectedTags.ingredientList, saisie));
+      } else if (event.target.id === "searchAppareil") {
+         createFilterList("#appareilList", recipeSearch.getAppareilsList(filteredRecipes, selectedTags.appareilList, saisie));
+      } else if (event.target.id === "searchUstensil") {
+         createFilterList("#ustensilList", recipeSearch.getUstensilList(filteredRecipes, selectedTags.ustensilList, saisie));
+      }
    })
+})
 
 // Crée la liste du filtre et pose un listener click sur chaque élément de la liste
 function createFilterList(nodeFilter, filterList) {
-   const indexFilterItem = document.querySelector(nodeFilter);
+   const nodeFilterUl = document.querySelector(nodeFilter);
 
-      // Supression des listes existantes
-      indexFilterItem.innerHTML = null;
+   // Supression des listes existantes
+   nodeFilterUl.innerHTML = null;
 
-      // Si filterList vide
-      if (filterList.length === 0) {
-         indexFilterItem.innerHTML = `<span class="noFilter"> Aucun filtre disponible </span>`;
+   // Si filterList vide
+   if (filterList.length === 0) {
+      nodeFilterUl.innerHTML = `<span class="noFilter"> Aucun filtre disponible </span>`;
 
-      } else {
-         // Ajout des nouvelles listes
-      filterList.forEach((el) => {
-            const list = document.createElement("li");
-            list.classList.add("itemLiFilter");
-            list.innerHTML = el;
-            indexFilterItem.appendChild(list);
-            // addEventListener sur chaque élément liste créee
-            list.addEventListener("click", (event) => onSelectTag(event));
-         })
-      }
+   } else {
+      // Ajout des nouvelles listes
+      filterList.forEach((e) => {
+         const list = document.createElement("li");
+         list.classList.add("itemLiFilter");
+         list.innerHTML = e;
+         nodeFilterUl.appendChild(list);
+         // addEventListener sur chaque élément liste créee
+         list.addEventListener("click", (event) => onSelectTag(event));
+      })
    }
+}
 
 
 /* **************************************** */
-/*                V2 - TAGS                 */ 
+/* ******         V2 - TAGS          ****** */
 /* **************************************** */
 
-   /********* Ajout tag *********/
-   function onSelectTag(event) {
-      const indexSectionTag = document.querySelector(".sectionTags");
-      const tagName = event.target.textContent;
-      const indexContListItem = event.target.parentElement;
+/********* Ajout tag *********/
+function onSelectTag(event) {
+   const nodeSectionTag = document.querySelector(".sectionTags");
+   const tagName = event.target.textContent;
+   const nodeContListUl = event.target.parentElement;
 
-      /****** Clic sur liste ******/
-      // Sélectionne l'input depuis <li> cliquée vers <input> de la <li>
-      closeDropDown(indexContListItem.previousElementSibling);
+   /****** Clic sur liste ******/
+   // Sélectionne <input> 
+   closeDropDown(nodeContListUl.previousElementSibling);
 
-      /*** Création du tag ***/
-      const tagIndex = document.createElement("button");
-      tagIndex.innerHTML = `${tagName}<img src="assets/icons/croix.svg" alt="" />`;
-      tagIndex.classList.add("btnTag");
-      // Ajout data type de tag + couleur du panel & tag
-      if (indexContListItem.id === "ingredientList") {
-         tagIndex.classList.add("colorIngredient");
-         tagIndex.setAttribute("data-id", "ingredientList")
-      } else if (indexContListItem.id === "appareilList") {
-         tagIndex.classList.add("colorAppareil");
-         tagIndex.setAttribute("data-id", "appareilList")
-      } else if (indexContListItem.id === "ustensilList") {
-         tagIndex.classList.add("colorUstensil");
-         tagIndex.setAttribute("data-id", "ustensilList")
-      }
-      // Génération des Tags
-      indexSectionTag.appendChild(tagIndex);
-      // Ajout listener sur tag crée avec suppression tag si clic
-      tagIndex.addEventListener("click", (event) => onRemoveTag(event));
-
-      // Object.key <=> array 
-      selectedTags[indexContListItem.id].push(tagName);
-
-      // Filtre tableau recette avec nom tag
-      filteredRecipes = search.filterByTag(event.target.parentElement.id, event.target.textContent, filteredRecipes);
-      
-      // Affichage recettes filtrées
-      recipesDisplay(filteredRecipes);
-      console.log(filteredRecipes);
+   /*** Création du tag ***/
+   const tagNode = document.createElement("button");
+   tagNode.innerHTML = `${tagName}<img src="assets/icons/croix.svg" alt="" />`;
+   tagNode.classList.add("btnTag");
+   // Ajout data type de tag + couleur tag
+   if (nodeContListUl.id === "ingredientList") {
+      tagNode.classList.add("colorIngredient");
+      tagNode.setAttribute("data-id", "ingredientList")
+   } else if (nodeContListUl.id === "appareilList") {
+      tagNode.classList.add("colorAppareil");
+      tagNode.setAttribute("data-id", "appareilList")
+   } else if (nodeContListUl.id === "ustensilList") {
+      tagNode.classList.add("colorUstensil");
+      tagNode.setAttribute("data-id", "ustensilList")
    }
+   // Génération Tag
+   nodeSectionTag.appendChild(tagNode);
+   // Ajout listener sur tag crée avec suppression tag si clic
+   tagNode.addEventListener("click", (event) => onRemoveTag(event));
+
+   // Ajout du nom du Tag à la liste des Tags sélectionnés 
+   selectedTags[nodeContListUl.id].push(tagName);
+
+   // Filtre tableau recette avec le nom du tag
+   filteredRecipes = recipeSearch.filterByTag(event.target.parentElement.id, event.target.textContent, filteredRecipes);
+
+   // Affichage recettes filtrées
+   recipesDisplay(filteredRecipes);
+
+   console.log(filteredRecipes);
+}
 
 
-   /********* Suppression tag *********/
-   // Supprime un tag, filtre le tableau filteredRecipes avec tags restants
-   function onRemoveTag(event) {
+/********* Suppression tag *********/
+// Supprime un tag, filtre le tableau filteredRecipes avec tags restants
+function onRemoveTag(event) {
 
-      // Supression nom tag de la liste du filtre
-      // idTag -> tag ingredient ou appareil
-      const idTag = event.target.dataset.id;
+   /* Supression nom tag de la liste du filtre + suppression Tag */
+   // idTag -> tag ingredient ou appareil
+   const idTag = event.target.dataset.id;
 
-      // Récupération index du nom du tag 
+   // Récupération index du nom du tag 
    const indexTag = selectedTags[idTag].indexOf(event.target.textContent);
-      
+
    // Suppression nom Tag de selectedTags
    selectedTags[idTag].splice(indexTag, 1);
 
-      // Supression tag
-      event.target.remove();
+   // Supression tag
+   event.target.remove();
 
    /* Pour chaque tag restant, filteredRecipes est filtré une nouvelle fois */
-   filteredRecipes = search.filterByArrayTag(selectedTags);
+   filteredRecipes = recipeSearch.filterByArrayTag(selectedTags);
 
-   // Si entry valide dans mainSearch: filtrer filteredRecipes   
-      if (validSearch) {
-         filteredRecipes = search.itemsMainSearch(validSearch, filteredRecipes);
-      }
-
-      // Affichage recette filtrées
-      recipesDisplay(filteredRecipes);
-      console.log(filteredRecipes);
+   // Si saisie valide dans mainSearch: filtrer filteredRecipes   
+   if (validSearch) {
+      filteredRecipes = recipeSearch.mainSearch(validSearch, filteredRecipes);
    }
 
+   // Affichage recette filtrées
+   recipesDisplay(filteredRecipes);
+   console.log(filteredRecipes);
+}
 
 /* ************************************************ */
-/*         V2 - AFFICHAGE des RECETTES              */ 
+/* ******   V2 - AFFICHAGE des RECETTES      ****** */ 
 /* ************************************************ */
 
-   function recipesDisplay(arrayRecipe) {
+function recipesDisplay(arrayRecipe) {
 
-      // Supression des recettes préexistantes
-      indexRecipeSection.innerHTML = null;
+   // Supression des recettes préexistantes
+   indexRecipeSection.innerHTML = null;
 
-      // Affichage html des recettes filtrées par recherche globale (et Tag)
-      arrayRecipe.forEach((el) => {
-         const recipeFactory = new RecipeFactory(el);
-         indexRecipeSection.appendChild(recipeFactory.createRecipeCards());
-      })
-   }
+   // Affichage html des recettes filtrées par recherche globale (et Tag)
+   arrayRecipe.forEach((e) => {
+      const recipeFactory = new RecipeFactory(e);
+      indexRecipeSection.appendChild(recipeFactory.createRecipeCards());
+   })
+}
 
 /* ************************************************ */
-/*            V2 - RECHERCHE PRINCIPALE             */ 
+/* ******     V2 - RECHERCHE PRINCIPALE      ****** */ 
 /* ************************************************ */
-   
-   const indexSearch = document.querySelector("#globalSearch");
-   let indexRecipeSection = document.querySelector(".sectionRecettes");
 
-   // EventListener sur <input> champ de recherche recette
-   indexSearch.addEventListener("input", (event) => {
+const indexSearch = document.querySelector("#mainSearch");
+let indexRecipeSection = document.querySelector(".sectionRecettes");
 
-      // si au moins 3 lettres entry -> déclanche la recherche
-      if (event.target.value.length > 2) {
+/* Listener sur recherche principale, si saisie valide -> affiche recettes filtrées, sinon message d'erreur ou retour aux recettes d'origine */
+indexSearch.addEventListener("input", (event) => {
 
-         // Extraction valeur de l'entrée (entry)
-         validSearch = event.target.value;
-         console.log(validSearch);
+   // Si au moins 3 lettres saisies -> recherche
+   if (event.target.value.length > 2) {
 
-         /* Modifie tableau filteredRecipes fonction entry input */
-         filteredRecipes = search.itemsMainSearch(event.target.value, filteredRecipes);
-         // Si recherche entrée est inconnue
-         if (filteredRecipes.length === 0) {
+      // Extraction valeur saisie
+      validSearch = event.target.value;
 
-            // Reset tableau recette
-            filteredRecipes = [...originalRecipes];
+      console.log(validSearch);
+
+      /* Modifie tableau filteredRecipes fonction saisie input */
+      filteredRecipes = recipeSearch.mainSearch(event.target.value, filteredRecipes);
+      // Si saisie inconnue
+      if (filteredRecipes.length === 0) {
+
+         // Reset tableau recette
+         filteredRecipes = [...originalRecipes];
 
          // Filtrage du tableau avec tags si existent
-         filteredRecipes = search.filterByArrayTag(selectedTags);
+         filteredRecipes = recipeSearch.filterByArrayTag(selectedTags);
 
-            // Suppression des recettes affichées
-            indexRecipeSection.innerHTML = null;
+         // Suppression des recettes affichées
+         indexRecipeSection.innerHTML = null;
 
-            // Affichage aucune recette trouvée
-            const errorMessage = document.createElement("span");
+         // Affichage aucune recette trouvée
+         const errorMessage = document.createElement("span");
          errorMessage.textContent = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
-            indexRecipeSection.appendChild(errorMessage);
-
-         } else {
-
-            // Si entry valide -> affichage recettes
-            recipesDisplay(filteredRecipes)
-         }
+         indexRecipeSection.appendChild(errorMessage);
 
       } else {
 
-         // Si entry < 3 lettre = pas de recherche
-         validSearch = "";
-
-      filteredRecipes = search.filterByArrayTag(selectedTags);
-      recipesDisplay(filteredRecipes);
+         // Si saisie valide -> affichage recettes
+         recipesDisplay(filteredRecipes)
       }
-   })
+
+   } else {
+
+      // Si saisie < 3 lettre = pas de saisie
+      validSearch = "";
+
+      filteredRecipes = recipeSearch.filterByArrayTag(selectedTags);
+      recipesDisplay(filteredRecipes);
+   }
+})
 
 
 
 /* ************************************************ */
-/*            V2 - DROPDOWN FILTERS                 */ 
+/* ******     V2 - DROPDOWN FILTERS          ****** */
 /* ************************************************ */
 
 // Fermer/ouvrir menu dropdown:

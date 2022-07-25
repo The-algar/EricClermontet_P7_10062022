@@ -1,36 +1,37 @@
 export default class RecipeFactory {
-    constructor(objetRecipe) {
-        this.objetRecipe = objetRecipe;
+    constructor(recipeCard) {
+        this.recipeCard = recipeCard;
     }
 
     // retourne le html <article> à partir d'un objet recette
     createRecipeCards() {
-        const articleRecipe = document.createElement("article");
-        articleRecipe.innerHTML = `
-        <div class="imgRecette"></div>
+        const cardRecipe = document.createElement("article");
+        cardRecipe.innerHTML = `
+        <div class="imgRecette"><img src="${this.recipeCard.picture}" alt="${this.recipeCard.name}" /></div>
         <div class="legende">
             <div class="titre">
-                <h2>${this.objetRecipe.name}</h2>
-                <span><img src="assets/icons/clock.svg" alt="" />${this.objetRecipe.time} min</span>
+                <h2>${this.recipeCard.name}</h2>
+                <span><img src="./assets/icons/clock.svg" alt="" />${this.recipeCard.time} min</span>
             </div>
             <div class="description">
                 <ul>
                     ${this.createLiIngredients()}
                 </ul>
-                <p>${this.objetRecipe.description}</p>
+                <p>${this.recipeCard.description}</p>
             </div>
         </div>`;
-        return articleRecipe
+
+        //console.log(cardRecipe);
+
+        return cardRecipe
     }
 
-    /* retourne des listes <li> d'ingrédients à partir du tableau d'ingrédients 
-    variable */
-    // ingredients = [{ingredient:, quantity:, unit:}, {ingrédient: ...}, {...}
+    /* retourne des listes <li> d'ingrédients à partir tableau ingrédients */
     createLiIngredients() {
         let newLiIngredient = "";
         /* boucle sur le tableau d'ingrédients et crée <li> avec propriétés quantity et unit si elles existent, retire le ":" si elles n'existent pas */
-        for (let el of this.objetRecipe.ingredients) {
-            newLiIngredient = newLiIngredient + `<li><span>${el.ingredient}${(el.ingredient) ? ":" : ""}</span> ${el.quantity || ""} ${el.unit || ""}</li>`;
+        for (let e of this.recipeCard.ingredients) {
+            newLiIngredient = newLiIngredient + `<li><span>${e.ingredient}${(e.quantity) ? ":" : ""}</span> ${e.quantity || ""} ${e.unit || ""}</li>`;
         }
         return newLiIngredient
     }

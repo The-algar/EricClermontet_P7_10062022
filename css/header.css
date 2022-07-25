@@ -3,26 +3,23 @@ header {
   flex-direction: column;
   align-items: center;
 }
+
 header img {
+  display: block;
+  width: 100%;
+  max-width: 52px; /*actual image width*/
+  height: auto; /* maintain aspect ratio*/
+  margin: auto; /*optional centering of image*/
   height: 47px;
-  width: 52px;
+  /* width: 52px; */
 }
 header h1 {
+  display: flex;
+  flex-flow: 1 100%;
+  justify-content: center;
+  align-content: center;
   font-family: "DM Sans", sans-serif;
   color: #d04f4f;
   font-size: 2.3em;
   margin: 0px 0 16px 0;
-}
-header a img:hover,
-header a h1:hover
-{
-  cursor: pointer;
-}
-
-/* responsive */
-@media screen and (max-width: 520px) {
-  header h1 {
-    font-size: 2em;
-    white-space: nowrap;
-  }
 }

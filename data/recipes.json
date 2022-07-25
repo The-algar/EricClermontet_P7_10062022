@@ -2,6 +2,7 @@
     {
         "id": 1,
         "name" : "Limonade de Coco",
+        "picture": "./assets/img/limonada-de-coco-1200.jpg",
         "servings" : 1,
         "ingredients": [
             {
@@ -35,6 +36,7 @@
     {
         "id": 2,
         "name" : "Poisson Cru à la tahitienne",
+        "picture": "./assets/img/Poisson_cru_à_la_tahitienne-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -71,6 +73,7 @@
     },{
         "id": 3,
         "name": "Poulet coco réunionnais",
+        "picture": "./assets/img/Poulet coco reunionnais-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -108,6 +111,7 @@
     },{
         "id": 4,
         "name": "Salade de riz",
+        "picture": "./assets/img/salade-de-riz-1200.jpg",
         "servings": 4,
         "ingredients":[
             {
@@ -146,6 +150,7 @@
     {
         "id": 5,
         "name": "Tarte au thon",
+        "picture": "./assets/img/tarte-au-thon-1200.jpg",
         "servings": 4,
         "ingredients":[
            {
@@ -185,6 +190,7 @@
     {
         "id": 6,
         "name": "Tarte aux pommes",
+        "picture": "./assets/img/tarte-aux-pommes-1200.jpg",
         "servings": 6,
         "ingredients":[
             {
@@ -223,6 +229,7 @@
     },{
         "id": 7,
         "name": "Tartelettes au chocolat et aux fraises",
+        "picture": "./assets/img/tartelette-ganache-chocolat-noire-et-fraises-1200.jpg",
         "servings": 6,
         "ingredients":[
             {
@@ -256,6 +263,7 @@
     }, {
         "id": 8,
         "name": "Brownie",
+        "picture": "./assets/img/Several_brownies-1200.jpg",
         "servings": 10,
         "ingredients":[
            {
@@ -297,6 +305,7 @@
     {
         "id": 9,
         "name": "Salade Méditerannéene fraiche au chèvre",
+        "picture": "./assets/img/salade-mediterraneenne-fraiche-avec-du-feta-1200.jpg",
         "servings": 4,
         "ingredients":[
             {
@@ -329,6 +338,7 @@
     {
         "id": 10,
         "name": "Tartiflette",
+        "picture": "./assets/img/Tartiflette-1200.jpg",
         "servings": 4,
         "ingredients":[
             {
@@ -363,6 +373,7 @@
     },{
         "id": 11,
         "name": "Salade tomate, mozzarella et pommes",
+        "picture": "./assets/img/Salade-tomate-mozzarella-et-pommes-1200.jpg",
         "servings": 4,
         "ingredients":[
             {
@@ -401,6 +412,7 @@
     },{
         "id": 12,
         "name": "Compote pomme rhubarbe",
+        "picture": "./assets/img/Compote-pomme-rhubarbe-1200.jpg",
         "servings": 4,
         "ingredients":[
             {
@@ -431,6 +443,7 @@
     {
         "id": 13,
         "name": "Salade mâchée de patates",
+        "picture": "./assets/img/salade-de-mache-et-pommes-de-terre-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -467,6 +480,7 @@
     {
         "id": 14,
         "name": "Galette Bretonne Saucisse et Fromage à raclette",
+        "picture": "./assets/img/Galette-Bretonne-Saucisse-et-Fromage-à-raclette-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -507,6 +521,7 @@
     {
         "id": 15,
         "name": "Crêpes Chocolat Banane",
+        "picture": "./assets/img/crepe-chocolat-banane-1200.jpg",
         "servings": 10,
         "ingredients": [
             {
@@ -546,6 +561,7 @@
     {
         "id": 16,
         "name": "Gratin de pâtes à la tomate",
+        "picture": "./assets/img/gratin-pates-mozza-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -582,6 +598,7 @@
     {
         "id": 17,
         "name": "Smoothie à la fraise",
+        "picture": "./assets/img/smotthie-fraise-1200.jpg",
         "servings": 6,
         "ingredients": [
             {
@@ -614,6 +631,7 @@
     {
         "id": 18,
         "name": "Smoothie ananas et vanille",
+        "picture": "./assets/img/Smoothie-à-lananas-Vanille-1200.jpg",
         "servings": 5,
         "ingredients": [
             {
@@ -639,6 +657,7 @@
     {
         "id": 19,
         "name": "Shake Banane Kiwi",
+        "picture": "./assets/img/Shake-Banane-Kiwi-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -672,6 +691,7 @@
     {
         "id": 20,
         "name": "Pates Carbonara",
+        "picture": "./assets/img/Spaghetti_carbonara-1200.jpg",
         "servings": 5,
         "ingredients": [
             {
@@ -708,6 +728,7 @@
     {
         "id": 21,
         "name": "Spaghettis à la bolognaise",
+        "picture": "./assets/img/spaghettis-bolognaise-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -748,6 +769,7 @@
     {
         "id": 22,
         "name": "Fondant au chocolat",
+        "picture": "./assets/img/Fondant_au_chocolat-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -783,6 +805,7 @@
     {
         "id": 23,
         "name": "Quiche lorraine",
+        "picture": "./assets/img/Quiche_lorraine-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -823,6 +846,7 @@
     {
         "id": 24,
         "name": "Salade de pâtes",
+        "picture": "./assets/img/salade-de-pates-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -862,6 +886,7 @@
     {
         "id": 25,
         "name": "Cookies",
+        "picture": "./assets/img/Cookies-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -897,6 +922,7 @@
     {
         "id": 26,
         "name": "Soupe de tomates",
+        "picture": "./assets/img/soupe-tomate-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -928,6 +954,7 @@
     {
         "id": 27,
         "name": "Soupe à l'oseille",
+        "picture": "./assets/img/soupe-a-l-oseille-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -962,6 +989,7 @@
     {
         "id": 28,
         "name": "Soupe de poireaux",
+        "picture": "./assets/img/Soupe-de-poireaux-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -997,6 +1025,7 @@
     {
         "id": 29,
         "name": "Houmous Express",
+        "picture": "./assets/img/Houmous-Express-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -1028,6 +1057,7 @@
     {
         "id": 30,
         "name": "Purée de pois cassés",
+        "picture": "./assets/img/puree_de_pois_casses-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1053,6 +1083,7 @@
     {
         "id": 31,
         "name": "Jardinière de légumes",
+        "picture": "./assets/img/Jardiniere-de-legumes-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1086,7 +1117,8 @@
     },
     {
         "id": 32,
-        "name": "Croque Monsieur à la dinde",
+        "name": "Croque-monsieur à la dinde",
+        "picture": "./assets/img/Croque-Monsieur-dinde-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1128,6 +1160,7 @@
     {
         "id": 33,
         "name": "Sandwich au saumon fumé",
+        "picture": "./assets/img/Sandwich-au-saumon-fumé-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1163,6 +1196,7 @@
     {
         "id": 34,
         "name": "Purée de patate douce",
+        "picture": "./assets/img/puree-de-patates-douces-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1191,6 +1225,7 @@
     {
         "id": 35,
         "name": "Purée de carottes",
+        "picture": "./assets/img/purée-de-carottes-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -1230,6 +1265,7 @@
     {
         "id": 36,
         "name": "Lasagne Courgettes et Chèvre",
+        "picture": "./assets/img/lasagnes-aux-courgettes-et-au-chevre-1200.webp",
         "servings": 2,
         "ingredients": [
             {
@@ -1269,6 +1305,7 @@
     {
         "id": 37,
         "name": "Courgettes farcies au boeuf",
+        "picture": "./assets/img/Courgettes-farcies-au-boeuf-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -1309,6 +1346,7 @@
     {
         "id": 38,
         "name": "Pain Perdu",
+        "picture": "./assets/img/pain-perdu-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1339,6 +1377,7 @@
     {
         "id": 39,
         "name": "Crumble aux pommes",
+        "picture": "./assets/img/crumble-aux-pommes-1200.jpg",
         "servings": 40,
         "ingredients": [
             {
@@ -1369,6 +1408,7 @@
     {
         "id": 40,
         "name": "Limonade",
+        "picture": "./assets/img/Lemonade-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1399,6 +1439,7 @@
     {
         "id": 41,
         "name": "Mousse au chocolat",
+        "picture": "./assets/img/Mousse_au_chocolat-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1424,6 +1465,7 @@
     {
         "id": 42,
         "name": "Charlotte au poires",
+        "picture": "./assets/img/charlotte-poire-1200.jpg",
         "servings": 3,
         "ingredients": [
             {
@@ -1453,6 +1495,7 @@
     {
         "id": 43,
         "name": "Tarte au citron",
+        "picture": "./assets/img/Tarte_au_citron-1200.JPG",
         "servings": 6,
         "ingredients": [
             {
@@ -1485,7 +1528,8 @@
     }, 
     {
         "id": 44,
-        "name": "Crème déssert au chocolat",
+        "name": "Crème dessert au chocolat",
+        "picture": "./assets/img/Chocoladevla-1200.jpg",
         "servings": 6,
         "ingredients": [
             {
@@ -1522,6 +1566,7 @@
     {
         "id": 45,
         "name": "Crème patissière",
+        "picture": "./assets/img/creme-patissiere-1200.jpg",
         "servings": 8,
         "ingredients": [
             {
@@ -1552,6 +1597,7 @@
     {
         "id": 46,
         "name": "Far breton",
+        "picture": "./assets/img/far-breton-1200.jpg",
         "servings": 6,
         "ingredients": [
             {
@@ -1592,6 +1638,7 @@
     {
         "id": 47,
         "name": "Mousse au citron",
+        "picture": "./assets/img/Mousse-au-citron-1200.jpg",
         "servings": 6,
         "ingredients": [
             {
@@ -1623,6 +1670,7 @@
     {
         "id": 48,
         "name": "Pizza",
+        "picture": "./assets/img/Pizza-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1658,6 +1706,7 @@
     {
         "id": 49,
         "name": "Smoothie tropical",
+        "picture": "./assets/img/C7BEBE-1200.jpg",
         "servings": 4,
         "ingredients": [
             {
@@ -1691,6 +1740,7 @@
     {
         "id": 50,
         "name": "Frangipane",
+        "picture": "./assets/img/C7BEBE-1200.jpg",
         "servings": 2,
         "ingredients": [
             {
@@ -1703,7 +1753,7 @@
                 "quantity": 6
             },
             {
-                "ingredient": "Poudre d'amendes",
+                "ingredient": "Poudre d'amandes",
                 "quantity": 500,
                 "unit": "grammes"
             },

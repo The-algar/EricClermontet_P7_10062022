@@ -1,9 +1,9 @@
 import Recipe from "../model/Recipe.js";
 
-/* ***************************************************************** */
-/* ******       V2 - FETCH RETURN DATA From JSON File         ****** */ 
-/* ***************************************************************** */
-export default class RecipeSearch { 
+/* **************************************** */
+/* ******       V2 - FETCH           ****** */
+/* **************************************** */
+export default class RecipeSearch {
     constructor() {
         this.recipes = [];
         this.originalRecipes = [];
@@ -17,7 +17,7 @@ export default class RecipeSearch {
             })
             .then(({ recipes }) => {       // Promise résolue: retourne data
                 // Recipes ->  [{..}, {..},] 50 objets recette
-                // map -> 50 instances de class Recipes
+                // map -> 50 instances de class Recipe
                 this.recipes = recipes.map((objRecipe) => {
                     const recipesInst = new Recipe(objRecipe);
                     return recipesInst;
@@ -25,17 +25,18 @@ export default class RecipeSearch {
                 this.originalRecipes = [...this.recipes];
             })
     }
-/* ************************************************************************ */
-/* ******    V2 - FILTERED SEARCH BY INGREDIENT, APPAREL, USTENSIL   ****** */ 
-/* ************************************************************************ */    
-    // Retourne liste d'ingrédients du tableau recette
-    // Si recherche filtre -> filtre ingrédients qui match avec recherche
+/* ************************************************ */
+/* ******        V2 - FILTERED SEARCH        ****** */ 
+/* ****** BY INGREDIENT, APPAREL, USTENSIL   ****** */ 
+/* ************************************************ */  
+    // Retourne liste ingrédients du tableau recette
+    // Si recherche filtre -> filtee ingrédients qui match avec l'input
     getIngredientsList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'ingrédients
         // map sur filteredRecipes si existe, sinon sur tableau recettes non modifié
-        let listIngredients = (filteredRecipes || this.recipes).map((objRecipe) => {
-            return objRecipe.ingredients.map((objIngredient) => {
+        let listIngredients = (filteredRecipes || this.recipes).map((objRecette) => {
+            return objRecette.ingredients.map((objIngredient) => {
                 return objIngredient.ingredient.toLowerCase()
             });
         });
@@ -47,15 +48,15 @@ export default class RecipeSearch {
         listIngredients = [... new Set(listIngredients)];
         console.log(entry);
         console.log(listIngredients);
-        //Filtre l'array de string ingrédients en fonction de la recherche
+        // Si saisie filtre: filtrer liste en fonction de la recherche
         if (entry) {
-            listIngredients = this.filterListBySearchEntry(listIngredients, entry)
+            listIngredients = this.filterListByCapture(listIngredients, entry)
         }
         console.log(listIngredients);
 
         // Formatage liste
         listIngredients = this.formateList(listIngredients);
-        console.log(exclusionList);
+        //console.log(exclusionList);
         // Supression des noms tags de la liste via liste d'exclusion
         if (exclusionList) {
             exclusionList.forEach((el) => {
@@ -69,7 +70,7 @@ export default class RecipeSearch {
         return listIngredients
     }
 
-    // Retourne liste d'appareils du tableau recette
+    // Retourne liste appareils du tableau recette
     getAppareilsList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
@@ -80,9 +81,9 @@ export default class RecipeSearch {
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
 
-        //Filtre l'array de string Appareil en fonction de la recherche
+        // Si saisie dans champ de recherche filtre: régénération liste de filtres fonction entry
         if (entry) {
-            listAppareils = this.filterListBySearchEntry(listAppareils, entry)
+            listAppareils = this.filterListByCapture(listAppareils, entry)
         }
 
         // Formatage liste
@@ -100,7 +101,7 @@ export default class RecipeSearch {
         return listAppareils
     }
 
-    // Retourne liste d'ustensiles du tableau recette
+    // Retourne liste ustensiles du tableau recette
     getUstensilList(filteredRecipes, exclusionList, entry) {
 
         // Transformation array d'objet recette -> array de liste d'appareils
@@ -110,15 +111,15 @@ export default class RecipeSearch {
             })
         })
 
-        // Supprime l'imbrication en créant un nouveau tableau avec tous les éléments des sous tableaux concaténés dans celui-ci récursivement 
+        // Supprime 1 imbrication  
         listUstensils = listUstensils.flat();
 
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listUstensils = [... new Set(listUstensils)];
 
-        //Filtre l'array de string Ustensil en fonction de la recherche
+        // Si saisie: filtrer liste fonction entry
         if (entry) {
-            listUstensils = this.filterListBySearchEntry(listUstensils, entry)
+            listUstensils = this.filterListByCapture(listUstensils, entry)
         }
 
         // Formatage liste
@@ -150,15 +151,15 @@ export default class RecipeSearch {
         })
     }
 
-    // Filtre tableau de recettes en fonction de l'entry dans le search filter
-    filterListBySearchEntry(listIngredients, entryIngredient) {
-        // Filtre l'array de string ingrédients en fonction de l'ingrédient recherché
+    // Trie la liste en fonction de la saisie dans filtre
+    filterListByCapture(listIngredients, entryIngredient) {
+        // Filtre l'array de string ingrédients en fct saisie
         return listIngredients = listIngredients.filter((el) => {
             return el.indexOf(entryIngredient.toLowerCase()) > -1
         });
     }
 
-    // Filtre tableau de recettes en fonction des Tags choisis
+    /* Filtre tableau de recettes en fonction d'un tableau de tags, si pas de tag, pas de modification de filteredRecipes */
     filterByArrayTag(selectedTags) {
 
         // Remise état origine tableau recette
@@ -184,12 +185,12 @@ export default class RecipeSearch {
                     return el.ingredient.toLowerCase() === tagName.toLowerCase();
                 })
             })
-        /* Si valeur de propriété appliance = string tag -> retourne objet recette */
+            /* Si valeur de propriété appliance = string tag -> retourne objet recette */
         } else if (filterType === "appareilList") {
             filteredRecipes = filteredRecipes.filter((el) => {
                 return el.appliance.toLowerCase() === tagName.toLowerCase();
             })
-        /* Si le tableau ustensils contient string tag -> retourne objet recette */
+            /* Si le tableau ustensils contient string tag -> retourne objet recette */
         } else if (filterType === "ustensilList") {
             filteredRecipes = filteredRecipes.filter((el) => {
                 return el.ustensils.find((el) => {
@@ -201,26 +202,26 @@ export default class RecipeSearch {
     }
 
 
-    // Filtre tableau recette en fonction de la recherche globale
-    itemsMainSearch(entry, filteredRecipes) {
+    // Retourne tableau recettes en fonction saisie recherche principale
+    mainSearch(entry, filteredRecipes) {
         const recipeFiltered = [];
         const entryLow = entry.toLowerCase();
 
         console.log(filteredRecipes);
-
+        
         filteredRecipes.forEach((instRecipe) => {
             const nameLow = instRecipe.name.toLowerCase();
             const descriptionLow = instRecipe.description.toLowerCase();
 
-        // Si entry entry contenue dans nom recette, ajoute recette
+            // Si saisie contenue dans nom recette, ajoute recette
             if (nameLow.includes(entryLow)) {
                 recipeFiltered.push(instRecipe)
             }
-            // Ou si entry est contenue dans description recette, ajoute recette
+            // Ou si saisie contenue dans description recette, ajoute recette
             else if (descriptionLow.includes(entryLow)) {
                 recipeFiltered.push(instRecipe)
             }
-            // Ou si entry est contenue dans liste d'ingrédients, ajoute recette
+            // Ou si saisie contenue dans liste d'ingrédients, ajoute recette
             else {
                 instRecipe.ingredients.forEach((ingredients) => {
                     const ingredientLow = ingredients.ingredient.toLowerCase();
@@ -232,5 +233,4 @@ export default class RecipeSearch {
         })
         return recipeFiltered
     }
-
 }
