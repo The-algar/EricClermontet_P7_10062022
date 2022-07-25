@@ -67,6 +67,7 @@ export default class RecipeSearch {
             })
         }
         console.log(listIngredients);
+
         return listIngredients
     }
 
@@ -80,6 +81,8 @@ export default class RecipeSearch {
 
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listAppareils = [... new Set(listAppareils)];
+        console.log(entry);
+        console.log(listAppareils);
 
         // Si saisie dans champ de recherche filtre: régénération liste de filtres fonction entry
         if (entry) {
@@ -116,6 +119,9 @@ export default class RecipeSearch {
 
         // Obj Set -> supprime doublons, spread [... set] conversion set -> array
         listUstensils = [... new Set(listUstensils)];
+
+        console.log(entry);
+        console.log(listUstensils);
 
         // Si saisie: filtrer liste fonction entry
         if (entry) {
